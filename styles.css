@@ -1,0 +1,419 @@
+:root {
+    /* Retro Color Palette */
+    --bg-color: #f4ecd8; /* Paper-like off-white */
+    --border-color: #1a1a1a; /* Ink black */
+    --text-color: #1a1a1a;
+    
+    /* Zoning Colors */
+    --color-woodland: #65a851;
+    --color-smahus: #f2c94c;
+    --color-radhus: #f2994a;
+    --color-klassisk: #d4a373;
+    --color-hoghus: #56ccf2;
+    --color-tata: #2f80ed;
+    --color-mycket: #9b51e0;
+
+    /* Static Features Colors */
+    --color-boulevard: #4f4f4f;
+    --color-station: #eb5757;
+    --color-blocked: #bdbdbd;
+    --color-empty: #e0d9c8;
+    --color-pond: #0ea5e9;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Custom floating tooltip */
+.cell-tooltip {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    background: var(--border-color);
+    color: var(--bg-color);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.4rem 0.7rem;
+    border-radius: 4px;
+    border: 2px solid #ffcc00;
+    box-shadow: 3px 3px 0 #ffcc00;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    display: none;
+}
+
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.4s ease;
+}
+
+.splash-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.splash-image {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border: 6px solid #ffcc00;
+    box-shadow: 10px 10px 0 #ffcc00;
+    border-radius: 6px;
+}
+
+.splash-hint {
+    margin-top: 2rem;
+    color: #ffcc00;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.3; }
+}
+
+body {
+    font-family: 'Space Mono', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background-color: var(--border-color);
+    color: var(--bg-color);
+    border-bottom: 4px solid var(--border-color);
+}
+
+.game-header h1 {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.stats-panel {
+    background-color: #fff;
+    color: var(--border-color);
+    padding: 0.5rem 1rem;
+    border: 3px solid var(--border-color);
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 4px 4px 0 var(--border-color);
+}
+
+.game-container {
+    display: flex;
+    flex: 1;
+    padding: 2rem;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+/* Toolbar */
+.toolbar {
+    width: 280px;
+    background-color: #fff;
+    border: 4px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 6px 6px 0 var(--border-color);
+}
+
+.toolbar h2 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+#tools-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.tool-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--bg-color);
+    border: 3px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: left;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 3px 3px 0 var(--border-color);
+}
+
+.tool-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--border-color);
+}
+
+.tool-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--border-color);
+}
+
+.tool-btn.active {
+    background-color: var(--border-color);
+    color: #fff;
+    box-shadow: inset 3px 3px 0 rgba(0,0,0,0.5);
+    transform: translate(2px, 2px);
+}
+
+.tool-color-box {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+}
+
+/* Board Area */
+.board-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    background-color: #fff;
+    border: 4px solid var(--border-color);
+    box-shadow: 8px 8px 0 var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Border Labels */
+.border {
+    position: absolute;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--border-color);
+    letter-spacing: 1px;
+}
+
+.border-north { top: 1rem; left: 3rem; right: 3rem; display: flex; justify-content: space-between; }
+.border-south { bottom: 1rem; width: 100%; text-align: center; }
+
+/* Grid Container */
+.game-grid {
+    position: relative; /* For absolute positioning of the external railroad */
+    display: grid;
+    gap: 2px;
+    background-color: var(--border-color);
+    border: 4px solid var(--border-color);
+    width: 100%;
+    aspect-ratio: 26 / 10.5;
+    max-height: 70vh;
+}
+
+/* External Road Graphic (West Border) */
+.road-container {
+    position: absolute;
+    right: 100%; /* Placed right outside the grid on the left */
+    top: -4px;
+    bottom: -4px;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.label-road-text {
+    position: absolute;
+    top: 50%;
+    right: 0.2rem; /* aligns it to the right of the road track */
+    transform: translateY(-50%) rotate(-90deg);
+    white-space: nowrap;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--border-color);
+    letter-spacing: 1px;
+    z-index: 2; /* ensures it sits visibly above the container space */
+}
+
+.road-track {
+    position: absolute;
+    top: -3rem;
+    bottom: -3rem;
+    width: 16px;
+    background-color: var(--color-boulevard);
+    border-left: 3px solid var(--border-color);
+    border-right: 3px solid var(--border-color);
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 10px,
+        #fff 10px,
+        #fff 20px
+    );
+    background-size: 4px 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+/* External Railroad & Station Graphics */
+.railroad-container {
+    position: absolute;
+    left: 100%; /* Placed right outside the grid */
+    top: -4px; /* offset the 4px border */
+    bottom: -4px;
+    width: 3rem; /* fits perfectly in the wrapper padding */
+    display: flex;
+    justify-content: center;
+}
+
+.label-railway {
+    transform: rotate(90deg);
+    position: absolute;
+    top: 20%;
+    white-space: nowrap;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--border-color);
+    letter-spacing: 1px;
+}
+
+.railroad-track {
+    position: absolute;
+    top: -3rem; /* extend through top padding */
+    bottom: -3rem; /* extend through bottom padding */
+    width: 16px;
+    background-color: #d1c4a9; /* distinct ground color for the track */
+    border-left: 3px solid var(--border-color);
+    border-right: 3px solid var(--border-color);
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 14px,
+        var(--border-color) 14px,
+        var(--border-color) 20px
+    );
+    z-index: 1;
+}
+
+.station-building {
+    position: absolute;
+    /* Boulevard is row index 3 (4th row). Total 10 rows. Center is 35%. */
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    background-color: #ffcc00; /* Beautiful comic yellow */
+    border: 3px solid var(--border-color);
+    padding: 0.4rem 0.6rem;
+    color: var(--border-color);
+    font-weight: 900;
+    border-radius: 6px;
+    /* Box shadow adjusted so it still casts down and right in world space */
+    box-shadow: -4px 4px 0 var(--border-color), inset 3px -3px 0 rgba(0,0,0,0.1);
+    z-index: 10;
+    text-align: center;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.grid-cell {
+    background-color: var(--color-empty);
+    cursor: pointer;
+    transition: opacity 0.1s;
+}
+
+.grid-cell:hover {
+    opacity: 0.8;
+}
+
+/* Static and Zone Types */
+.cell-empty { background-color: var(--color-empty); }
+.cell-boulevard { 
+    cursor: not-allowed; 
+    position: relative;
+    border-top: 3px solid #2d5a27;
+    border-bottom: 3px solid #2d5a27;
+    background-image: linear-gradient(
+        to bottom,
+        #a68b85 0%, #a68b85 20%, /* Top bike lane */
+        #888 20%, #888 40%,      /* Top car lane */
+        var(--color-woodland) 40%, var(--color-woodland) 60%, /* Grass median */
+        #888 60%, #888 80%,      /* Bottom car lane */
+        #a68b85 80%, #a68b85 100% /* Bottom bike lane */
+    );
+}
+
+/* Trees in the boulevard median */
+.cell-boulevard::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-image: 
+        radial-gradient(circle at 25% 50%, #468234 2.5px, transparent 3px),
+        radial-gradient(circle at 75% 50%, #87c773 2px, transparent 2.5px);
+    background-size: 20px 100%;
+}
+
+.cell-station { background-color: var(--color-station); cursor: not-allowed; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.7rem;}
+.cell-station::after { content: 'S'; }
+.cell-blocked { background-color: var(--color-blocked); cursor: not-allowed; background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(0,0,0,0.1) 4px, rgba(0,0,0,0.1) 8px);}
+
+.cell-pond {
+    background-color: var(--color-pond);
+    cursor: not-allowed;
+    background-image: 
+        radial-gradient(circle at 30% 30%, #38bdf8 20%, transparent 21%),
+        radial-gradient(circle at 70% 60%, #0284c7 20%, transparent 21%),
+        linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.2) 45%, rgba(255,255,255,0.2) 55%, transparent 60%);
+    border-radius: 4px;
+}
+
+.cell-woodland {
+    background-color: var(--color-woodland);
+    background-image: 
+        radial-gradient(circle at 20% 30%, #87c773 15%, transparent 16%),
+        radial-gradient(circle at 75% 70%, #468234 20%, transparent 21%),
+        radial-gradient(circle at 50% 85%, #468234 15%, transparent 16%);
+}
+.cell-smahus { background-color: var(--color-smahus); }
+.cell-radhus { background-color: var(--color-radhus); }
+.cell-klassisk { background-color: var(--color-klassisk); }
+.cell-hoghus { background-color: var(--color-hoghus); }
+.cell-tata { background-color: var(--color-tata); }
+.cell-mycket { background-color: var(--color-mycket); }

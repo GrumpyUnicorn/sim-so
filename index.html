@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sydöstra Uppsala City Builder</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <img src="bygg-ditt-eget-sydostra.png" alt="Bygg ditt eget Sydöstra" class="splash-image">
+        <p class="splash-hint">Klicka för att starta</p>
+    </div>
+
+    <header class="game-header">
+        <h1>Sydöstra Uppsala Planner</h1>
+        <div class="stats-panel">
+            <span class="stat-label">Total New Bostäder:</span>
+            <span class="stat-value" id="total-dwellings">0</span>
+        </div>
+    </header>
+
+    <main class="game-container">
+        <!-- Toolbar for Zoning -->
+        <aside class="toolbar" id="toolbar">
+            <h2>Zoning Tools</h2>
+            <div id="tools-container"></div>
+        </aside>
+
+        <!-- Game Board -->
+        <section class="board-wrapper">
+            <!-- Borders -->
+            <div class="border border-north">
+                <span class="border-label label-nw">Sävja</span>
+                <span class="border-label label-ne">Bergsbrunna</span>
+            </div>
+            <div class="border border-south"><span class="border-label">Lunsens naturreservat</span></div>
+            
+            <!-- The Grid -->
+            <div id="game-grid" class="game-grid">
+                <!-- Road (West Border) -->
+                <div class="road-container">
+                    <div class="road-track"></div>
+                    <span class="label-road-text">Väg 255</span>
+                </div>
+                
+                <!-- Railroad (East Border) -->
+                <div class="railroad-container">
+                    <span class="border-label label-railway">Järnväg</span>
+                    <div class="railroad-track"></div>
+                    <div class="station-building">Station</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Custom tooltip -->
+    <div id="cell-tooltip" class="cell-tooltip"></div>
+    <script src="app.js"></script>
+</body>
+</html>
