@@ -1,8 +1,30 @@
 const ZoningTypes = {
     WOODLAND: { id: 'woodland', name: 'Skog/Park', density: 0, colorClass: 'cell-woodland', colorHex: '#8ab060' },
-    SMAHUS: { id: 'smahus', name: 'Småhus', density: 15, colorClass: 'cell-smahus', colorHex: '#f2c94c', tooltipImage: '15.png' },
-    RADHUS: { id: 'radhus', name: 'Radhus', density: 30, colorClass: 'cell-radhus', colorHex: '#f2994a' },
-    KLASSISK: { id: 'klassisk', name: 'Klassisk trädgårdstad', density: 50, colorClass: 'cell-klassisk', colorHex: '#d4a373' },
+    SMAHUS: {
+        id: 'smahus',
+        name: 'Småhus & Egnahem',
+        density: 15,
+        colorClass: 'cell-smahus',
+        colorHex: '#f2c94c',
+        tooltipImage: '15.png',
+        description: 'Typ Bergsbrunna / Nåntuna. Friliggande villor och egnahem med generösa privata trädgårdar.'
+    },
+    KLASSISK: {
+        id: 'klassisk',
+        name: 'Klassisk trädgårdsstad',
+        density: 30,
+        colorClass: 'cell-radhus',
+        colorHex: '#f2994a',
+        description: 'Typ Kungsgärdet / Inre Svartbäcken. Tidigt 1900-talsideal med hus tätt mot gatan och lummiga, sammanhängande innergårdar.'
+    },
+    LAMELLHUS: {
+        id: 'lamellhus',
+        name: 'Lamellhus i park',
+        density: 50,
+        colorClass: 'cell-klassisk',
+        colorHex: '#d4a373',
+        description: 'Typ Tuna Backar / Sala Backe. Klassiska trevånings smalhus från folkhemsperioden omgivna av stora allmänna parkytor.'
+    },
     HOGHUS: { id: 'hoghus', name: 'Höghus', density: 100, colorClass: 'cell-hoghus', colorHex: '#56ccf2' },
     TATA_HOGHUS: { id: 'tata', name: 'Täta höghus', density: 150, colorClass: 'cell-tata', colorHex: '#2f80ed' },
     MYCKET_TATA: { id: 'mycket', name: 'Mycket täta höghus', density: 250, colorClass: 'cell-mycket', colorHex: '#9b51e0' }
@@ -134,8 +156,7 @@ class UIManager {
             btn.appendChild(nameSpan);
             btn.appendChild(colorBox);
 
-            const tooltipText = `${zone.density} Bostäder per hektar`;
-            btn.addEventListener('mouseenter', (e) => this.showTooltip(tooltipText, e, zone.tooltipImage));
+            btn.addEventListener('mouseenter', (e) => this.showZoneTooltip(zone, e));
             btn.addEventListener('mousemove', (e) => this.moveTooltip(e));
             btn.addEventListener('mouseleave', () => this.hideTooltip());
 
@@ -203,20 +224,39 @@ class UIManager {
         }
     }
 
-    showTooltip(text, e, imageSrc) {
+    showTooltip(text, e) {
         this.tooltip.replaceChildren();
-        if (imageSrc) {
-            const img = document.createElement('img');
-            img.src = imageSrc;
-            img.alt = '';
-            img.className = 'tooltip-image';
-            this.tooltip.appendChild(img);
-        }
+        this.tooltip.className = 'cell-tooltip';
         const label = document.createElement('span');
         label.textContent = text;
         this.tooltip.appendChild(label);
-        this.tooltip.classList.toggle('cell-tooltip--with-image', Boolean(imageSrc));
-        this.tooltip.style.display = imageSrc ? 'flex' : 'block';
+        this.tooltip.style.display = 'block';
+        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
+        this.moveTooltip(e);
+    }
+
+    showZoneTooltip(zone, e) {
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--zone';
+        if (zone.tooltipImage) {
+            const img = document.createElement('img');
+            img.src = zone.tooltipImage;
+            img.alt = '';
+            img.className = 'tooltip-image';
+            this.tooltip.appendChild(img);
+            this.tooltip.classList.add('cell-tooltip--with-image');
+        }
+        const density = document.createElement('span');
+        density.className = 'tooltip-density';
+        density.textContent = `${zone.density} Bostäder per hektar`;
+        this.tooltip.appendChild(density);
+        if (zone.description) {
+            const desc = document.createElement('span');
+            desc.className = 'tooltip-description';
+            desc.textContent = zone.description;
+            this.tooltip.appendChild(desc);
+        }
+        this.tooltip.style.display = 'flex';
         requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
         this.moveTooltip(e);
     }
