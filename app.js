@@ -1,5 +1,5 @@
 const ZoningTypes = {
-    WOODLAND: { id: 'woodland', name: 'Woodland/Park', density: 0, colorClass: 'cell-woodland', colorHex: '#8ab060' },
+    WOODLAND: { id: 'woodland', name: 'Skog/Park', density: 0, colorClass: 'cell-woodland', colorHex: '#8ab060' },
     SMAHUS: { id: 'smahus', name: 'Småhus', density: 15, colorClass: 'cell-smahus', colorHex: '#f2c94c' },
     RADHUS: { id: 'radhus', name: 'Radhus', density: 30, colorClass: 'cell-radhus', colorHex: '#f2994a' },
     KLASSISK: { id: 'klassisk', name: 'Klassisk trädgårdstad', density: 50, colorClass: 'cell-klassisk', colorHex: '#d4a373' },
@@ -133,6 +133,11 @@ class UIManager {
 
             btn.appendChild(nameSpan);
             btn.appendChild(colorBox);
+
+            const tooltipText = `${zone.density} Bostäder per hektar`;
+            btn.addEventListener('mouseenter', (e) => this.showTooltip(tooltipText, e));
+            btn.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            btn.addEventListener('mouseleave', () => this.hideTooltip());
 
             btn.addEventListener('click', () => this.setActiveTool(zone, btn));
             this.toolsContainer.appendChild(btn);
