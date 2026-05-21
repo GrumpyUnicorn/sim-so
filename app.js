@@ -1,6 +1,6 @@
 const ZoningTypes = {
     WOODLAND: { id: 'woodland', name: 'Skog/Park', density: 0, colorClass: 'cell-woodland', colorHex: '#8ab060' },
-    SMAHUS: { id: 'smahus', name: 'Småhus', density: 15, colorClass: 'cell-smahus', colorHex: '#f2c94c' },
+    SMAHUS: { id: 'smahus', name: 'Småhus', density: 15, colorClass: 'cell-smahus', colorHex: '#f2c94c', tooltipImage: '15.png' },
     RADHUS: { id: 'radhus', name: 'Radhus', density: 30, colorClass: 'cell-radhus', colorHex: '#f2994a' },
     KLASSISK: { id: 'klassisk', name: 'Klassisk trädgårdstad', density: 50, colorClass: 'cell-klassisk', colorHex: '#d4a373' },
     HOGHUS: { id: 'hoghus', name: 'Höghus', density: 100, colorClass: 'cell-hoghus', colorHex: '#56ccf2' },
@@ -135,7 +135,7 @@ class UIManager {
             btn.appendChild(colorBox);
 
             const tooltipText = `${zone.density} Bostäder per hektar`;
-            btn.addEventListener('mouseenter', (e) => this.showTooltip(tooltipText, e));
+            btn.addEventListener('mouseenter', (e) => this.showTooltip(tooltipText, e, zone.tooltipImage));
             btn.addEventListener('mousemove', (e) => this.moveTooltip(e));
             btn.addEventListener('mouseleave', () => this.hideTooltip());
 
@@ -203,9 +203,20 @@ class UIManager {
         }
     }
 
-    showTooltip(text, e) {
-        this.tooltip.textContent = text;
-        this.tooltip.style.display = 'block';
+    showTooltip(text, e, imageSrc) {
+        this.tooltip.replaceChildren();
+        if (imageSrc) {
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.alt = '';
+            img.className = 'tooltip-image';
+            this.tooltip.appendChild(img);
+        }
+        const label = document.createElement('span');
+        label.textContent = text;
+        this.tooltip.appendChild(label);
+        this.tooltip.classList.toggle('cell-tooltip--with-image', Boolean(imageSrc));
+        this.tooltip.style.display = imageSrc ? 'flex' : 'block';
         requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
         this.moveTooltip(e);
     }
