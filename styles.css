@@ -82,6 +82,21 @@
     letter-spacing: 0;
 }
 
+.cell-tooltip--detailed {
+    max-width: 340px;
+    gap: 0.55rem;
+}
+
+.cell-tooltip .tooltip-section {
+    font-size: 0.7rem;
+    line-height: 1.45;
+}
+
+.cell-tooltip .tooltip-label {
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
 .cell-tooltip .tooltip-image {
     display: block;
     max-width: 220px;
