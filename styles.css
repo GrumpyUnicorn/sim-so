@@ -222,7 +222,7 @@ body {
 
 .congestion-track-outer {
     position: relative;
-    padding-bottom: 2.6rem;
+    padding-top: 2.4rem;
 }
 
 .congestion-track {
@@ -311,7 +311,7 @@ body {
 
 .congestion-indicator {
     position: absolute;
-    bottom: -2.4rem;
+    top: -2.2rem;
     left: 0%;
     transform: translateX(-50%);
     z-index: 5;
@@ -346,20 +346,6 @@ body {
 .congestion-ticks span:nth-child(4) { left: 84%; }
 .congestion-ticks span:nth-child(5) { left: 100%; transform: translateX(-100%); }
 
-.congestion-alert {
-    margin-top: 0.75rem;
-    padding: 0.55rem 0.75rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    background: #ffcc00;
-    border: 3px solid var(--border-color);
-    border-radius: 6px;
-    box-shadow: 3px 3px 0 var(--border-color);
-    animation: congestion-pulse 1s ease-in-out infinite;
-}
-
 .congestion-meter--bilvagg-warning .congestion-zone--bilvagg {
     filter: none;
     opacity: 1;
@@ -378,11 +364,6 @@ body {
 
 .congestion-meter--gridlocked .congestion-indicator__arrow {
     animation: gridlock-shake 0.4s ease-in-out infinite;
-}
-
-@keyframes congestion-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
 }
 
 @keyframes zone-warning {

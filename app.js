@@ -246,7 +246,6 @@ class UIManager {
         this.tooltip = document.getElementById('cell-tooltip');
         this.congestionMeter = document.getElementById('congestion-meter');
         this.congestionIndicator = document.getElementById('congestion-indicator');
-        this.congestionAlert = document.getElementById('congestion-alert');
         this.zoneSweet = document.getElementById('zone-sweet');
         this.zoneBilvagg = document.getElementById('zone-bilvagg');
         this.zoneKollektivvagg = document.getElementById('zone-kollektivvagg');
@@ -298,18 +297,9 @@ class UIManager {
         this.congestionMeter.classList.toggle('congestion-meter--gridlocked', this.isGridlocked);
 
         if (overKollektivvagg) {
-            this.congestionAlert.hidden = false;
-            this.congestionAlert.textContent =
-                'Kollektivväggen nådd! Boulevarden MÅSTE konverteras till spårväg (Light Rail).';
             this.checkTrafficCrisis(total);
         } else if (overBilvagg) {
-            this.congestionAlert.hidden = false;
-            this.congestionAlert.textContent =
-                'Bilväggen nådd! Bilkörfälten står stilla under rusningstid.';
             this.checkTrafficCrisis(total);
-        } else {
-            this.congestionAlert.hidden = true;
-            this.congestionAlert.textContent = '';
         }
     }
 
