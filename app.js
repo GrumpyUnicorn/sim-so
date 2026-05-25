@@ -134,6 +134,14 @@ const ZoningTypes = {
     }
 };
 
+const CONGESTION_SCALE_MAX = 20000;
+const CONGESTION_THRESHOLDS = { BRT: 7000, LIGHT_RAIL: 12000 };
+
+const SCALE_TOOLTIPS = {
+    brt: 'BRT-system (Bus Rapid Transit). Endast nödvändigt om tätheten överstiger 7000 bostäder och vanliga bussar fastnar i bilköer. Bygger du varsamt slipper du denna kostnad.',
+    rail: 'Spårvagn. Ett extremt kapacitetssteg som krävs först vid 12000 bostäder när Boulevarden är helt överbelastad. Nödvändigt för miljonprogram, men överkurs för trädgårdsstäder.'
+};
+
 const StaticFeatures = {
     EMPTY: { id: 'empty', density: 0, colorClass: 'cell-empty' },
     BOULEVARD: { id: 'boulevard', density: 0, colorClass: 'cell-boulevard', buildable: false, name: 'Boulevard' },
@@ -235,13 +243,72 @@ class UIManager {
         this.dwellingsElement = document.getElementById('total-dwellings');
         this.toolsContainer = document.getElementById('tools-container');
         this.tooltip = document.getElementById('cell-tooltip');
-        
+        this.congestionMeter = document.getElementById('congestion-meter');
+        this.congestionIndicator = document.getElementById('congestion-indicator');
+        this.congestionAlert = document.getElementById('congestion-alert');
+        this.zoneBrt = document.getElementById('zone-brt');
+        this.zoneRail = document.getElementById('zone-rail');
+
+        this.brtFunded = false;
+        this.lightRailFunded = false;
+        this.isGridlocked = false;
+
         this.cellElements = [];
         this.isMouseDown = false;
-        
+
         this.initTools();
         this.initGrid();
+        this.initCongestionMeter();
         this.setupEventListeners();
+        this.updateCongestionMeter();
+    }
+
+    initCongestionMeter() {
+        const bindScaleTooltip = (el, text) => {
+            el.addEventListener('mouseenter', (e) => this.showScaleTooltip(text, e));
+            el.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            el.addEventListener('mouseleave', () => this.hideTooltip());
+        };
+        bindScaleTooltip(this.zoneBrt, SCALE_TOOLTIPS.brt);
+        bindScaleTooltip(this.zoneRail, SCALE_TOOLTIPS.rail);
+    }
+
+    showScaleTooltip(text, e) {
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--scale';
+        this.tooltip.textContent = text;
+        this.tooltip.style.display = 'block';
+        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
+        this.moveTooltip(e);
+    }
+
+    updateCongestionMeter() {
+        const total = this.gameState.totalDwellings;
+        const pct = Math.min(100, (total / CONGESTION_SCALE_MAX) * 100);
+        this.congestionIndicator.style.left = `${pct}%`;
+
+        const overBrt = total > CONGESTION_THRESHOLDS.BRT;
+        const overRail = total > CONGESTION_THRESHOLDS.LIGHT_RAIL;
+
+        this.isGridlocked =
+            (overBrt && !this.brtFunded) || (overRail && !this.lightRailFunded);
+
+        this.congestionMeter.classList.toggle('congestion-meter--brt-warning', overBrt && !this.brtFunded);
+        this.congestionMeter.classList.toggle('congestion-meter--rail-warning', overRail && !this.lightRailFunded);
+        this.congestionMeter.classList.toggle('congestion-meter--gridlocked', this.isGridlocked);
+
+        if (overRail && !this.lightRailFunded) {
+            this.congestionAlert.hidden = false;
+            this.congestionAlert.textContent =
+                'Kritisk belastning! Boulevarden kräver Spårvagn (Light Rail) vid över 12 000 bostäder.';
+        } else if (overBrt && !this.brtFunded) {
+            this.congestionAlert.hidden = false;
+            this.congestionAlert.textContent =
+                'Trafikvarning! Över 7 000 bostäder — Boulevarden behöver BRT (Bus Rapid Transit).';
+        } else {
+            this.congestionAlert.hidden = true;
+            this.congestionAlert.textContent = '';
+        }
     }
 
     initTools() {
@@ -387,7 +454,8 @@ class UIManager {
     }
 
     updateCounter() {
-        this.dwellingsElement.textContent = this.gameState.totalDwellings.toLocaleString();
+        this.dwellingsElement.textContent = this.gameState.totalDwellings.toLocaleString('sv-SE');
+        this.updateCongestionMeter();
     }
 }
 

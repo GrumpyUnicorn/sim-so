@@ -17,10 +17,43 @@
     <header class="game-header">
         <h1>Sydöstra Uppsala Planner</h1>
         <div class="stats-panel">
-            <span class="stat-label">Total New Bostäder:</span>
+            <span class="stat-label">Antal nya bostäder:</span>
             <span class="stat-value" id="total-dwellings">0</span>
         </div>
     </header>
+
+    <section class="congestion-meter" id="congestion-meter" aria-label="Boulevardens transportkapacitet">
+        <div class="congestion-meter__header">
+            <span class="congestion-meter__title">Boulevardens kapacitet</span>
+            <span class="congestion-meter__range">0 – 20&nbsp;000 bostäder</span>
+        </div>
+        <div class="congestion-track-outer">
+            <div class="congestion-track" id="congestion-track">
+                <div class="congestion-zone congestion-zone--green" data-zone="sweet">
+                    <span class="congestion-zone__badge">The Sweet Spot</span>
+                    <span class="congestion-zone__label">Cykel, Bil &amp; Vanlig Buss</span>
+                </div>
+                <div class="congestion-zone congestion-zone--brt congestion-zone--dormant" id="zone-brt" data-zone="brt">
+                    <span class="congestion-zone__lock" aria-hidden="true">🔒</span>
+                    <span class="congestion-zone__label">Kräver BRT (Bus Rapid Transit)</span>
+                </div>
+                <div class="congestion-zone congestion-zone--rail congestion-zone--dormant" id="zone-rail" data-zone="rail">
+                    <span class="congestion-zone__lock" aria-hidden="true">🔒</span>
+                    <span class="congestion-zone__label">Kräver Spårvagn (Light Rail)</span>
+                </div>
+                <div class="congestion-indicator" id="congestion-indicator" aria-hidden="true">
+                    <span class="congestion-indicator__icon">🚲</span>
+                </div>
+            </div>
+            <div class="congestion-ticks">
+                <span>0</span>
+                <span>7&nbsp;000</span>
+                <span>12&nbsp;000</span>
+                <span>20&nbsp;000</span>
+            </div>
+        </div>
+        <p class="congestion-alert" id="congestion-alert" hidden></p>
+    </section>
 
     <main class="game-container">
         <!-- Toolbar for Zoning -->
