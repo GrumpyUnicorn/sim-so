@@ -25,15 +25,15 @@ const ZoningTypes = {
         colorClass: 'cell-smahus',
         colorHex: '#f2c94c',
         tooltip: [
-            { label: 'Typologi', text: 'Gles småhusbebyggelse' },
-            { label: 'Exempel', text: 'Bergsbrunna / Nåntuna' },
+            { label: 'Typologi', text: 'Klassisk småhusbebyggelse / Egnahem' },
+            { label: 'Exempel', text: 'Äldre delarna av Bergsbrunna / Nåntuna' },
             {
                 label: 'Layout & Skala',
-                text: 'Friliggande villor och egnahem på stora tomter, inbäddade i generösa privata trädgårdar (ofta 800–1200 kvm).'
+                text: 'Friliggande trävillor och egnahemshus på väl tilltagna tomter. Området präglas av uppvuxna, lummiga trädgårdar med fruktträd, häckar och gott om plats för privat grönska och egenodling.'
             },
             {
                 label: 'Täthetsförklaring',
-                text: 'En mycket stor andel av marken utgörs av privat tomtmark och asfalterade lokalgator. Detta sprider ut befolkningen och ger en låg bruttotäthet på cirka 15 bostäder per hektar.'
+                text: 'Fokus ligger på den privata trädgårdsstaden och självständigt boende i fristående hus. Den låga tätheten på ca 15 bostäder per hektar beror på de generösa tomtstorlekarna, vilket ger en luftig struktur med mycket luft, solljus och privat sfär för varje hushåll.'
             }
         ]
     },
