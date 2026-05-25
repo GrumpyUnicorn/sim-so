@@ -248,19 +248,19 @@ body {
 }
 
 .congestion-zone--green {
-    flex: 35 1 0;
+    flex: 48 1 0;
     background: #6fcf4a;
     color: var(--border-color);
 }
 
-.congestion-zone--brt {
-    flex: 25 1 0;
+.congestion-zone--bilvagg {
+    flex: 24 1 0;
     background: #f2c94c;
     color: var(--border-color);
 }
 
-.congestion-zone--rail {
-    flex: 40 1 0;
+.congestion-zone--kollektivvagg {
+    flex: 28 1 0;
     background: #eb5757;
     color: #fff;
 }
@@ -298,8 +298,12 @@ body {
     line-height: 1;
 }
 
-.congestion-zone--dormant[data-zone="brt"],
-.congestion-zone--dormant[data-zone="rail"] {
+.congestion-zone--dormant[data-zone="bilvagg"],
+.congestion-zone--dormant[data-zone="kollektivvagg"] {
+    cursor: help;
+}
+
+.congestion-zone[data-zone="sweet"] {
     cursor: help;
 }
 
@@ -361,13 +365,13 @@ body {
     animation: congestion-pulse 1s ease-in-out infinite;
 }
 
-.congestion-meter--brt-warning .congestion-zone--brt {
+.congestion-meter--bilvagg-warning .congestion-zone--bilvagg {
     filter: none;
     opacity: 1;
     animation: zone-warning 0.8s ease-in-out infinite;
 }
 
-.congestion-meter--rail-warning .congestion-zone--rail {
+.congestion-meter--kollektivvagg-warning .congestion-zone--kollektivvagg {
     filter: none;
     opacity: 1;
     animation: zone-warning 0.8s ease-in-out infinite;

@@ -134,12 +134,13 @@ const ZoningTypes = {
     }
 };
 
-const CONGESTION_SCALE_MAX = 20000;
-const CONGESTION_THRESHOLDS = { BRT: 7000, LIGHT_RAIL: 12000 };
+const CONGESTION_SCALE_MAX = 25000;
+const CONGESTION_THRESHOLDS = { BILVAGG: 12000, KOLLEKTIVVAGG: 18000 };
 
 const SCALE_TOOLTIPS = {
-    brt: 'BRT-system (Bus Rapid Transit). Endast nödvändigt om tätheten överstiger 7000 bostäder och vanliga bussar fastnar i bilköer. Bygger du varsamt slipper du denna kostnad.',
-    rail: 'Spårvagn. Ett extremt kapacitetssteg som krävs först vid 12000 bostäder när Boulevarden är helt överbelastad. Nödvändigt för miljonprogram, men överkurs för trädgårdsstäder.'
+    sweet: 'Status: Optimal balans.\nBoulevards kapacitet matchar stadsdelens storlek perfekt. Bilarna flyter i sina 2+2 körfält, och eftersom bussarna har en helt renodlad fil når alla Bergsbrunna station i tid. Ingen tung spårinfrastruktur behövs överhuvudtaget.',
+    bilvagg: 'Status: Bilkörfälten har slagit i taket.\nDu har byggt bortom den glesa idyllen. De vanliga körfälten står helt stilla under rusningstid. Men tack vare att bussfilen är fredad från bilar tar sig kollektivtrafiken fortfarande fram – ett klockrent bevis på att planeringen håller, än så länge.',
+    kollektivvagg: 'Status: Systemkollaps för gummihjul.\nNu är tätheten så extrem (miljonprogram och hypertäta höghus) att vanliga bussar inte längre kan svälja mängden resenärer. Bussarna börjar klumpa ihop sig och systemet kollapsar. Boulevarden MÅSTE konverteras till spårväg (Light Rail) för att klara trycket.'
 };
 
 const StaticFeatures = {
@@ -246,11 +247,10 @@ class UIManager {
         this.congestionMeter = document.getElementById('congestion-meter');
         this.congestionIndicator = document.getElementById('congestion-indicator');
         this.congestionAlert = document.getElementById('congestion-alert');
-        this.zoneBrt = document.getElementById('zone-brt');
-        this.zoneRail = document.getElementById('zone-rail');
+        this.zoneSweet = document.getElementById('zone-sweet');
+        this.zoneBilvagg = document.getElementById('zone-bilvagg');
+        this.zoneKollektivvagg = document.getElementById('zone-kollektivvagg');
 
-        this.brtFunded = false;
-        this.lightRailFunded = false;
         this.isGridlocked = false;
 
         this.cellElements = [];
@@ -269,8 +269,9 @@ class UIManager {
             el.addEventListener('mousemove', (e) => this.moveTooltip(e));
             el.addEventListener('mouseleave', () => this.hideTooltip());
         };
-        bindScaleTooltip(this.zoneBrt, SCALE_TOOLTIPS.brt);
-        bindScaleTooltip(this.zoneRail, SCALE_TOOLTIPS.rail);
+        bindScaleTooltip(this.zoneSweet, SCALE_TOOLTIPS.sweet);
+        bindScaleTooltip(this.zoneBilvagg, SCALE_TOOLTIPS.bilvagg);
+        bindScaleTooltip(this.zoneKollektivvagg, SCALE_TOOLTIPS.kollektivvagg);
     }
 
     showScaleTooltip(text, e) {
@@ -287,27 +288,36 @@ class UIManager {
         const pct = Math.min(100, (total / CONGESTION_SCALE_MAX) * 100);
         this.congestionIndicator.style.left = `${pct}%`;
 
-        const overBrt = total > CONGESTION_THRESHOLDS.BRT;
-        const overRail = total > CONGESTION_THRESHOLDS.LIGHT_RAIL;
+        const overBilvagg = total > CONGESTION_THRESHOLDS.BILVAGG;
+        const overKollektivvagg = total > CONGESTION_THRESHOLDS.KOLLEKTIVVAGG;
 
-        this.isGridlocked =
-            (overBrt && !this.brtFunded) || (overRail && !this.lightRailFunded);
+        this.isGridlocked = overKollektivvagg;
 
-        this.congestionMeter.classList.toggle('congestion-meter--brt-warning', overBrt && !this.brtFunded);
-        this.congestionMeter.classList.toggle('congestion-meter--rail-warning', overRail && !this.lightRailFunded);
+        this.congestionMeter.classList.toggle('congestion-meter--bilvagg-warning', overBilvagg && !overKollektivvagg);
+        this.congestionMeter.classList.toggle('congestion-meter--kollektivvagg-warning', overKollektivvagg);
         this.congestionMeter.classList.toggle('congestion-meter--gridlocked', this.isGridlocked);
 
-        if (overRail && !this.lightRailFunded) {
+        if (overKollektivvagg) {
             this.congestionAlert.hidden = false;
             this.congestionAlert.textContent =
-                'Kritisk belastning! Boulevarden kräver Spårvagn (Light Rail) vid över 12 000 bostäder.';
-        } else if (overBrt && !this.brtFunded) {
+                'Kollektivväggen nådd! Boulevarden MÅSTE konverteras till spårväg (Light Rail).';
+            this.checkTrafficCrisis(total);
+        } else if (overBilvagg) {
             this.congestionAlert.hidden = false;
             this.congestionAlert.textContent =
-                'Trafikvarning! Över 7 000 bostäder — Boulevarden behöver BRT (Bus Rapid Transit).';
+                'Bilväggen nådd! Bilkörfälten står stilla under rusningstid.';
+            this.checkTrafficCrisis(total);
         } else {
             this.congestionAlert.hidden = true;
             this.congestionAlert.textContent = '';
+        }
+    }
+
+    checkTrafficCrisis(totalBostader) {
+        if (totalBostader > CONGESTION_THRESHOLDS.KOLLEKTIVVAGG) {
+            console.warn(`[Kollektivväggen] ${totalBostader} bostäder — systemkollaps för gummihjul. Spårväg krävs.`);
+        } else if (totalBostader > CONGESTION_THRESHOLDS.BILVAGG) {
+            console.warn(`[Bilväggen] ${totalBostader} bostäder — bilkörfälten har slagit i taket.`);
         }
     }
 

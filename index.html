@@ -25,21 +25,21 @@
     <section class="congestion-meter" id="congestion-meter" aria-label="Boulevardens transportkapacitet">
         <div class="congestion-meter__header">
             <span class="congestion-meter__title">Boulevardens kapacitet</span>
-            <span class="congestion-meter__range">0 – 20&nbsp;000 bostäder</span>
+            <span class="congestion-meter__range">0 – 25&nbsp;000 bostäder</span>
         </div>
         <div class="congestion-track-outer">
             <div class="congestion-track" id="congestion-track">
-                <div class="congestion-zone congestion-zone--green" data-zone="sweet">
-                    <span class="congestion-zone__badge">The Sweet Spot</span>
+                <div class="congestion-zone congestion-zone--green" id="zone-sweet" data-zone="sweet">
+                    <span class="congestion-zone__badge">Den gyllene medelvägen</span>
                     <span class="congestion-zone__label">Cykel, Bil &amp; Vanlig Buss</span>
                 </div>
-                <div class="congestion-zone congestion-zone--brt congestion-zone--dormant" id="zone-brt" data-zone="brt">
+                <div class="congestion-zone congestion-zone--bilvagg congestion-zone--dormant" id="zone-bilvagg" data-zone="bilvagg">
                     <span class="congestion-zone__lock" aria-hidden="true">🔒</span>
-                    <span class="congestion-zone__label">Kräver BRT (Bus Rapid Transit)</span>
+                    <span class="congestion-zone__label">Bilväggen nådd</span>
                 </div>
-                <div class="congestion-zone congestion-zone--rail congestion-zone--dormant" id="zone-rail" data-zone="rail">
+                <div class="congestion-zone congestion-zone--kollektivvagg congestion-zone--dormant" id="zone-kollektivvagg" data-zone="kollektivvagg">
                     <span class="congestion-zone__lock" aria-hidden="true">🔒</span>
-                    <span class="congestion-zone__label">Kräver Spårvagn (Light Rail)</span>
+                    <span class="congestion-zone__label">Kollektivväggen nådd!</span>
                 </div>
                 <div class="congestion-indicator" id="congestion-indicator" aria-hidden="true">
                     <span class="congestion-indicator__icon">🚲</span>
@@ -47,9 +47,9 @@
             </div>
             <div class="congestion-ticks">
                 <span>0</span>
-                <span>7&nbsp;000</span>
                 <span>12&nbsp;000</span>
-                <span>20&nbsp;000</span>
+                <span>18&nbsp;000</span>
+                <span>25&nbsp;000</span>
             </div>
         </div>
         <p class="congestion-alert" id="congestion-alert" hidden></p>
