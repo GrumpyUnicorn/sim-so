@@ -42,13 +42,17 @@
                     <span class="congestion-zone__label">Kollektivväggen nådd!</span>
                 </div>
                 <div class="congestion-indicator" id="congestion-indicator" aria-hidden="true">
-                    <span class="congestion-indicator__icon">🚲</span>
+                    <svg class="congestion-indicator__arrow" viewBox="0 0 28 38" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 38 L4 26 L9 26 L9 2 C9 1 10 0 11 0 L17 0 C18 0 19 1 19 2 L19 26 L24 26 Z" fill="#ffcc00" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/>
+                        <circle cx="14" cy="13" r="4" fill="#1a1a1a"/>
+                    </svg>
                 </div>
             </div>
             <div class="congestion-ticks">
                 <span>0</span>
                 <span>12&nbsp;000</span>
                 <span>18&nbsp;000</span>
+                <span>21&nbsp;000</span>
                 <span>25&nbsp;000</span>
             </div>
         </div>
