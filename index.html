@@ -22,6 +22,40 @@
         </div>
     </header>
 
+    <main class="game-container">
+        <!-- Toolbar for Zoning -->
+        <aside class="toolbar" id="toolbar">
+            <h2>Zoning Tools</h2>
+            <div id="tools-container"></div>
+        </aside>
+
+        <!-- Game Board -->
+        <section class="board-wrapper">
+            <!-- Borders -->
+            <div class="border border-north">
+                <span class="border-label label-nw">Sävja</span>
+                <span class="border-label label-ne">Bergsbrunna</span>
+            </div>
+            <div class="border border-south"><span class="border-label">Lunsens naturreservat</span></div>
+            
+            <!-- The Grid -->
+            <div id="game-grid" class="game-grid">
+                <!-- Road (West Border) -->
+                <div class="road-container">
+                    <div class="road-track"></div>
+                    <span class="label-road-text">Väg 255</span>
+                </div>
+                
+                <!-- Railroad (East Border) -->
+                <div class="railroad-container">
+                    <span class="border-label label-railway">Järnväg</span>
+                    <div class="railroad-track"></div>
+                    <div class="station-building">Station</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
     <section class="congestion-meter" id="congestion-meter" aria-label="Boulevardens transportkapacitet">
         <div class="congestion-meter__header">
             <span class="congestion-meter__title">Boulevardens kapacitet</span>
@@ -57,40 +91,6 @@
             </div>
         </div>
     </section>
-
-    <main class="game-container">
-        <!-- Toolbar for Zoning -->
-        <aside class="toolbar" id="toolbar">
-            <h2>Zoning Tools</h2>
-            <div id="tools-container"></div>
-        </aside>
-
-        <!-- Game Board -->
-        <section class="board-wrapper">
-            <!-- Borders -->
-            <div class="border border-north">
-                <span class="border-label label-nw">Sävja</span>
-                <span class="border-label label-ne">Bergsbrunna</span>
-            </div>
-            <div class="border border-south"><span class="border-label">Lunsens naturreservat</span></div>
-            
-            <!-- The Grid -->
-            <div id="game-grid" class="game-grid">
-                <!-- Road (West Border) -->
-                <div class="road-container">
-                    <div class="road-track"></div>
-                    <span class="label-road-text">Väg 255</span>
-                </div>
-                
-                <!-- Railroad (East Border) -->
-                <div class="railroad-container">
-                    <span class="border-label label-railway">Järnväg</span>
-                    <div class="railroad-track"></div>
-                    <div class="station-building">Station</div>
-                </div>
-            </div>
-        </section>
-    </main>
 
     <!-- Custom tooltip -->
     <div id="cell-tooltip" class="cell-tooltip"></div>
