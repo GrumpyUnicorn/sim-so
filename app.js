@@ -44,15 +44,15 @@ const ZoningTypes = {
         colorClass: 'cell-radhus',
         colorHex: '#f2994a',
         tooltip: [
-            { label: 'Typologi', text: 'Tät småhusbebyggelse / Trädgårdsstad' },
+            { label: 'Typologi', text: 'Äkta trädgårdsstad / Småskalig urbanism' },
             { label: 'Exempel', text: 'Kungsgärdet / Inre Svartbäcken' },
             {
                 label: 'Layout & Skala',
-                text: 'Tidigt 1900-talsideal. Husen placeras tätt mot gatan för att skapa ett intimt gaturum och omsluter lummiga, sammanhängande innergårdar.'
+                text: 'Inspirerad av engelsk Arts & Crafts-filosofi och hantverksideal. Husen har varierade, omsorgsfullt utformade fasader och placeras tätt mot smala, svängda gator. Detta maximerar utrymmet på baksidan för lummiga privata trädgårdstäppor som sömlöst möter större, gemensamma parkalléer och gröna innergårdar.'
             },
             {
                 label: 'Täthetsförklaring',
-                text: 'Genom smalare gator, mindre tomtstorlekar och smarta inslag av parhus samt tvåvånings trädgårdsstadshus, dubbleras tätheten jämfört med traditionella villaområden utan att förlora småskaligheten.'
+                text: 'Genom att minska de privata tomterna till förmån för gemensamma och tillgängliga grönområden uppnås en urban karaktär. Den medvetna balansen mellan privat sfär och delad grönska gör att området når 30 bostäder per hektar utan att förlora sin lummiga småskalighet.'
             }
         ]
     },
