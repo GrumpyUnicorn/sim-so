@@ -144,9 +144,6 @@ const SCALE_TOOLTIPS = {
 };
 
 const ZONING_IDS = new Set(Object.values(ZoningTypes).map((zone) => zone.id));
-const ZONING_BY_ID = Object.fromEntries(
-    Object.values(ZoningTypes).map((zone) => [zone.id, zone])
-);
 
 const StaticFeatures = {
     EMPTY: { id: 'empty', density: 0, colorClass: 'cell-empty' },
@@ -405,15 +402,7 @@ class UIManager {
 
     handleCellTooltip(x, y, e) {
         const cellData = this.gameState.grid[y][x];
-        if (!cellData) return;
-
-        if (cellData.buildable === false) {
-            if (cellData.name) this.showTooltip(cellData.name, e);
-            return;
-        }
-
-        const zone = ZONING_BY_ID[cellData.id];
-        if (zone) this.showZoneTooltip(zone, e);
+        if (cellData?.name) this.showTooltip(cellData.name, e);
     }
 
     showTooltip(text, e) {
