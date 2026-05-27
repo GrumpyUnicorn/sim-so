@@ -321,8 +321,7 @@ class UIManager {
             nameSpan.textContent = zone.name;
             
             const colorBox = document.createElement('div');
-            colorBox.className = 'tool-color-box';
-            colorBox.style.backgroundColor = zone.colorHex;
+            colorBox.className = `tool-color-box ${zone.colorClass}`;
 
             btn.appendChild(nameSpan);
             btn.appendChild(colorBox);
