@@ -175,6 +175,45 @@ body {
     letter-spacing: 2px;
 }
 
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.theme-select-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.theme-select-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.85;
+}
+
+.theme-select {
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.45rem 0.6rem;
+    border: 3px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--border-color);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--border-color);
+}
+
+.theme-select:focus {
+    outline: 2px solid #ffcc00;
+    outline-offset: 2px;
+}
+
 .stats-panel {
     background-color: #fff;
     color: var(--border-color);
@@ -716,4 +755,131 @@ body {
 .cell-tier-250 {
     background-color: var(--color-mycket);
     background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23474f78'/%3E%3Cpolygon points='8,52 18,18 28,52' fill='%235b8fe0' stroke='%231a1a1a' stroke-width='2'/%3E%3Cpolygon points='20,52 32,10 44,52' fill='%2369b7ff' stroke='%231a1a1a' stroke-width='2'/%3E%3Cpolygon points='36,52 48,16 58,52' fill='%234f9ad6' stroke='%231a1a1a' stroke-width='2'/%3E%3Crect y='52' width='64' height='12' fill='%232b2f40'/%3E%3Cpolygon points='8,52 18,18 20,52' fill='%23374d7f' opacity='0.8'/%3E%3Cpolygon points='20,52 32,10 34,52' fill='%233c5b91' opacity='0.8'/%3E%3Cpolygon points='36,52 48,16 50,52' fill='%23324f7a' opacity='0.8'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   Tile look themes (grid + toolbar swatches only — UI stays unchanged)
+   Switch via <html data-tile-theme="…"> and the header dropdown.
+   -------------------------------------------------------------------------- */
+
+[data-tile-theme="flat"] {
+    --color-empty: #e8e0d0;
+}
+
+[data-tile-theme="flat"] .game-grid .cell-woodland,
+[data-tile-theme="flat"] .game-grid .cell-smahus,
+[data-tile-theme="flat"] .game-grid .cell-radhus,
+[data-tile-theme="flat"] .game-grid .cell-klassisk,
+[data-tile-theme="flat"] .game-grid .cell-hoghus,
+[data-tile-theme="flat"] .game-grid .cell-tata,
+[data-tile-theme="flat"] .game-grid .cell-mycket,
+[data-tile-theme="flat"] .game-grid .cell-tier-0,
+[data-tile-theme="flat"] .game-grid .cell-tier-15,
+[data-tile-theme="flat"] .game-grid .cell-tier-30,
+[data-tile-theme="flat"] .game-grid .cell-tier-50,
+[data-tile-theme="flat"] .game-grid .cell-tier-100,
+[data-tile-theme="flat"] .game-grid .cell-tier-150,
+[data-tile-theme="flat"] .game-grid .cell-tier-250,
+[data-tile-theme="flat"] .toolbar .cell-woodland,
+[data-tile-theme="flat"] .toolbar .cell-smahus,
+[data-tile-theme="flat"] .toolbar .cell-radhus,
+[data-tile-theme="flat"] .toolbar .cell-klassisk,
+[data-tile-theme="flat"] .toolbar .cell-hoghus,
+[data-tile-theme="flat"] .toolbar .cell-tata,
+[data-tile-theme="flat"] .toolbar .cell-mycket,
+[data-tile-theme="flat"] .toolbar .cell-tier-0,
+[data-tile-theme="flat"] .toolbar .cell-tier-15,
+[data-tile-theme="flat"] .toolbar .cell-tier-30,
+[data-tile-theme="flat"] .toolbar .cell-tier-50,
+[data-tile-theme="flat"] .toolbar .cell-tier-100,
+[data-tile-theme="flat"] .toolbar .cell-tier-150,
+[data-tile-theme="flat"] .toolbar .cell-tier-250 {
+    background-image: none;
+}
+
+[data-tile-theme="flat"] .game-grid .cell-smahus,
+[data-tile-theme="flat"] .toolbar .cell-smahus,
+[data-tile-theme="flat"] .toolbar .cell-tier-15 {
+    box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+
+[data-tile-theme="flat"] .game-grid .cell-radhus,
+[data-tile-theme="flat"] .toolbar .cell-radhus,
+[data-tile-theme="flat"] .toolbar .cell-tier-30,
+[data-tile-theme="flat"] .game-grid .cell-klassisk,
+[data-tile-theme="flat"] .toolbar .cell-klassisk,
+[data-tile-theme="flat"] .toolbar .cell-tier-50 {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 5px,
+        rgba(0, 0, 0, 0.07) 5px,
+        rgba(0, 0, 0, 0.07) 6px
+    );
+}
+
+/* SimCity-retro: limited palette, chunky tiles */
+[data-tile-theme="simcity"] {
+    --color-woodland: #2d8a2d;
+    --color-smahus: #6cd86c;
+    --color-radhus: #4cb84c;
+    --color-klassisk: #3da83d;
+    --color-hoghus: #9e9e9e;
+    --color-tata: #6e6e6e;
+    --color-mycket: #3a5a9e;
+    --color-empty: #5cb85c;
+    --color-pond: #2060c0;
+}
+
+[data-tile-theme="simcity"] .game-grid {
+    gap: 0;
+    image-rendering: pixelated;
+}
+
+[data-tile-theme="simcity"] .game-grid .grid-cell {
+    image-rendering: pixelated;
+    outline: 1px solid rgba(0, 0, 0, 0.35);
+    outline-offset: -1px;
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-woodland,
+[data-tile-theme="simcity"] .toolbar .cell-woodland,
+[data-tile-theme="simcity"] .toolbar .cell-tier-0 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%232d8a2d'/%3E%3Crect x='2' y='4' width='4' height='4' fill='%231a5c1a'/%3E%3Crect x='10' y='3' width='4' height='5' fill='%231a5c1a'/%3E%3Crect x='6' y='10' width='4' height='4' fill='%231a5c1a'/%3E%3C/svg%3E");
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-smahus,
+[data-tile-theme="simcity"] .toolbar .cell-smahus,
+[data-tile-theme="simcity"] .toolbar .cell-tier-15 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%236cd86c'/%3E%3Crect x='4' y='7' width='8' height='6' fill='%23c04030'/%3E%3Crect x='5' y='5' width='6' height='2' fill='%23802020'/%3E%3Crect x='6' y='9' width='2' height='2' fill='%23ffff80'/%3E%3C/svg%3E");
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-radhus,
+[data-tile-theme="simcity"] .toolbar .cell-radhus,
+[data-tile-theme="simcity"] .toolbar .cell-tier-30 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%234cb84c'/%3E%3Crect x='1' y='6' width='4' height='6' fill='%23d0a040'/%3E%3Crect x='6' y='5' width='4' height='7' fill='%23e0b050'/%3E%3Crect x='11' y='6' width='4' height='6' fill='%23d0a040'/%3E%3C/svg%3E");
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-klassisk,
+[data-tile-theme="simcity"] .toolbar .cell-klassisk,
+[data-tile-theme="simcity"] .toolbar .cell-tier-50 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%233da83d'/%3E%3Crect x='2' y='6' width='12' height='6' fill='%23c8b888'/%3E%3Crect x='2' y='5' width='12' height='1' fill='%23a06040'/%3E%3Crect x='4' y='8' width='2' height='2' fill='%23ffffc0'/%3E%3Crect x='10' y='8' width='2' height='2' fill='%23ffffc0'/%3E%3C/svg%3E");
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-hoghus,
+[data-tile-theme="simcity"] .toolbar .cell-hoghus,
+[data-tile-theme="simcity"] .toolbar .cell-tier-100 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%239e9e9e'/%3E%3Crect x='3' y='2' width='10' height='10' fill='%23c0c0c0'/%3E%3Crect x='4' y='4' width='2' height='2' fill='%23e8f0ff'/%3E%3Crect x='7' y='4' width='2' height='2' fill='%23e8f0ff'/%3E%3Crect x='10' y='4' width='2' height='2' fill='%23e8f0ff'/%3E%3Crect x='4' y='7' width='2' height='2' fill='%23e8f0ff'/%3E%3Crect x='7' y='7' width='2' height='2' fill='%23e8f0ff'/%3E%3Crect x='10' y='7' width='2' height='2' fill='%23e8f0ff'/%3E%3C/svg%3E");
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-tata,
+[data-tile-theme="simcity"] .toolbar .cell-tata,
+[data-tile-theme="simcity"] .toolbar .cell-tier-150 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%236e6e6e'/%3E%3Crect x='1' y='2' width='4' height='12' fill='%23a05040'/%3E%3Crect x='6' y='2' width='4' height='12' fill='%23e8e8e8'/%3E%3Crect x='11' y='2' width='4' height='12' fill='%23404040'/%3E%3C/svg%3E");
+}
+
+[data-tile-theme="simcity"] .game-grid .cell-mycket,
+[data-tile-theme="simcity"] .toolbar .cell-mycket,
+[data-tile-theme="simcity"] .toolbar .cell-tier-250 {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%233a5a9e'/%3E%3Crect x='2' y='3' width='3' height='11' fill='%235090d0'/%3E%3Crect x='6' y='1' width='4' height='13' fill='%2360a8f0'/%3E%3Crect x='11' y='4' width='3' height='10' fill='%235090d0'/%3E%3C/svg%3E");
 }

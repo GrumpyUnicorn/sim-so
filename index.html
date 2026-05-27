@@ -1,11 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-tile-theme="illustrated">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sydöstra Uppsala City Builder</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        (function () {
+            var saved = localStorage.getItem('sim-se-tile-theme');
+            if (saved) document.documentElement.dataset.tileTheme = saved;
+        })();
+    </script>
 </head>
 <body>
     <!-- Splash Screen -->
@@ -16,9 +22,19 @@
 
     <header class="game-header">
         <h1>Sydöstra Uppsala Planner</h1>
-        <div class="stats-panel">
-            <span class="stat-label">Antal nya bostäder:</span>
-            <span class="stat-value" id="total-dwellings">0</span>
+        <div class="header-controls">
+            <div class="theme-select-wrap">
+                <label class="theme-select-label" for="tile-theme-select">Rututseende</label>
+                <select id="tile-theme-select" class="theme-select" aria-label="Välj hur rutorna visas">
+                    <option value="illustrated">Illustrerade</option>
+                    <option value="flat">Platta färger</option>
+                    <option value="simcity">SimCity-retro</option>
+                </select>
+            </div>
+            <div class="stats-panel">
+                <span class="stat-label">Antal nya bostäder:</span>
+                <span class="stat-value" id="total-dwellings">0</span>
+            </div>
         </div>
     </header>
 

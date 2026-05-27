@@ -143,6 +143,8 @@ const SCALE_TOOLTIPS = {
     kollektivvagg: 'Status: Systemkollaps för gummihjul.\nNu är tätheten så extrem (miljonprogram och hypertäta höghus) att vanliga bussar inte längre kan svälja mängden resenärer. Bussarna börjar klumpa ihop sig och systemet kollapsar. Boulevarden MÅSTE konverteras till spårväg (Light Rail) för att klara trycket.'
 };
 
+const ZONING_IDS = new Set(Object.values(ZoningTypes).map((zone) => zone.id));
+
 const StaticFeatures = {
     EMPTY: { id: 'empty', density: 0, colorClass: 'cell-empty' },
     BOULEVARD: { id: 'boulevard', density: 0, colorClass: 'cell-boulevard', buildable: false, name: 'Boulevard' },
@@ -321,7 +323,7 @@ class UIManager {
             nameSpan.textContent = zone.name;
             
             const colorBox = document.createElement('div');
-            colorBox.className = `tool-color-box ${zone.colorClass}`;
+            colorBox.className = `tool-color-box ${zone.colorClass} cell-tier-${zone.density}`;
 
             btn.appendChild(nameSpan);
             btn.appendChild(colorBox);
@@ -333,6 +335,11 @@ class UIManager {
             btn.addEventListener('click', () => this.setActiveTool(zone, btn));
             this.toolsContainer.appendChild(btn);
         });
+    }
+
+    getTierClassForCell(cellData) {
+        if (!cellData || !ZONING_IDS.has(cellData.id)) return '';
+        return `cell-tier-${cellData.density}`;
     }
 
     setActiveTool(zone, btnElement) {
@@ -351,7 +358,8 @@ class UIManager {
             for (let x = 0; x < this.gameState.cols; x++) {
                 const cell = document.createElement('div');
                 const cellData = this.gameState.grid[y][x];
-                cell.className = `grid-cell ${cellData.colorClass}`;
+                const tierClass = this.getTierClassForCell(cellData);
+                cell.className = `grid-cell ${cellData.colorClass} ${tierClass}`.trim();
                 cell.dataset.x = x;
                 cell.dataset.y = y;
                 
@@ -446,7 +454,8 @@ class UIManager {
         if (this.gameState.setZone(x, y, this.activeTool, isClick)) {
             const cellData = this.gameState.grid[y][x];
             // Update cell visual
-            cellElement.className = `grid-cell ${cellData.colorClass}`;
+            const tierClass = this.getTierClassForCell(cellData);
+            cellElement.className = `grid-cell ${cellData.colorClass} ${tierClass}`.trim();
             // Update counter
             this.updateCounter();
         }
@@ -458,7 +467,28 @@ class UIManager {
     }
 }
 
+const TILE_THEME_STORAGE_KEY = 'sim-se-tile-theme';
+const DEFAULT_TILE_THEME = 'illustrated';
+
+function initTileThemeSelector() {
+    const select = document.getElementById('tile-theme-select');
+    if (!select) return;
+
+    const saved = localStorage.getItem(TILE_THEME_STORAGE_KEY) || DEFAULT_TILE_THEME;
+    const theme = select.querySelector(`option[value="${saved}"]`) ? saved : DEFAULT_TILE_THEME;
+
+    document.documentElement.dataset.tileTheme = theme;
+    select.value = theme;
+
+    select.addEventListener('change', () => {
+        document.documentElement.dataset.tileTheme = select.value;
+        localStorage.setItem(TILE_THEME_STORAGE_KEY, select.value);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initTileThemeSelector();
+
     const gameState = new GameState(26, 11);
     const uiManager = new UIManager(gameState);
 
