@@ -39,7 +39,7 @@ export const ZoningTypes = {
     },
     KLASSISK: {
         id: 'klassisk',
-        name: 'Klassisk trädgårdsstad',
+        name: 'Trädgårdsstad',
         density: 30,
         colorClass: 'cell-radhus',
         colorHex: '#f2994a',
@@ -77,7 +77,7 @@ export const ZoningTypes = {
     },
     SKIVHUS: {
         id: 'hoghus',
-        name: 'Skivhus i park (Miljonprogram)',
+        name: 'Skivhus i park',
         density: 100,
         colorClass: 'cell-hoghus',
         colorHex: '#56ccf2',
@@ -96,7 +96,7 @@ export const ZoningTypes = {
     },
     KVARTERSSTAD: {
         id: 'tata',
-        name: 'Sluten kvartersstad (Innerstad)',
+        name: 'Sluten kvartersstad',
         density: 150,
         colorClass: 'cell-tata',
         colorHex: '#2f80ed',

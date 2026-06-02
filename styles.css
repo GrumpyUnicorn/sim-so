@@ -218,6 +218,7 @@ body {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    min-height: 3.25rem;
     padding: 0.8rem;
     background-color: var(--bg-color);
     border: 3px solid var(--border-color);
