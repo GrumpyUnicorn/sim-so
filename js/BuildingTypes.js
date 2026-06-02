@@ -134,9 +134,21 @@ export const ZoningTypes = {
     }
 };
 
+export const CONGESTION_SCALE_MAX = 25000;
+export const CONGESTION_THRESHOLDS = { BILVAGG: 12000, KOLLEKTIVVAGG: 18000 };
+
+export const SCALE_TOOLTIPS = {
+    sweet: 'Status: Optimal balans.\nBoulevards kapacitet matchar stadsdelens storlek perfekt. Bilarna flyter i sina 2+2 körfält, och eftersom bussarna har en helt renodlad fil når alla Bergsbrunna station i tid. Ingen tung spårinfrastruktur behövs överhuvudtaget.',
+    bilvagg: 'Status: Bilkörfälten har slagit i taket.\nDu har byggt bortom den glesa idyllen. De vanliga körfälten står helt stilla under rusningstid. Men tack vare att bussfilen är fredad från bilar tar sig kollektivtrafiken fortfarande fram – ett klockrent bevis på att planeringen håller, än så länge.',
+    kollektivvagg: 'Status: Systemkollaps för gummihjul.\nNu är tätheten så extrem (miljonprogram och hypertäta höghus) att vanliga bussar inte längre kan svälja mängden resenärer. Bussarna börjar klumpa ihop sig och systemet kollapsar. Boulevarden MÅSTE konverteras till spårväg (Light Rail) för att klara trycket.'
+};
+
+export const ZONING_IDS = new Set(Object.values(ZoningTypes).map((zone) => zone.id));
+
 export const StaticFeatures = {
     EMPTY: { id: 'empty', density: 0, colorClass: 'cell-empty' },
-    BOULEVARD: { id: 'boulevard', density: 0, colorClass: 'cell-boulevard', buildable: false },
-    STATION: { id: 'station', density: 0, colorClass: 'cell-station', buildable: false },
-    BLOCKED: { id: 'blocked', density: 0, colorClass: 'cell-blocked', buildable: false }
+    BOULEVARD: { id: 'boulevard', density: 0, colorClass: 'cell-boulevard', buildable: false, name: 'Boulevard' },
+    STATION: { id: 'station', density: 0, colorClass: 'cell-station', buildable: false, name: 'Station' },
+    BLOCKED: { id: 'blocked', density: 0, colorClass: 'cell-blocked', buildable: false, name: 'Existerande Sävja' },
+    POND: { id: 'pond', density: 0, colorClass: 'cell-pond', buildable: false, name: 'Stordammen' }
 };
