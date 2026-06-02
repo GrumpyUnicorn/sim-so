@@ -494,11 +494,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gameState = new GameState(26, 11);
     const uiManager = new UIManager(gameState);
-
-    // Splash screen dismiss on click
-    const splash = document.getElementById('splash-screen');
-    splash.addEventListener('click', () => {
-        splash.classList.add('hidden');
-        setTimeout(() => { splash.style.display = 'none'; }, 400);
-    });
 });
