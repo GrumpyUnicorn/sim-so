@@ -181,6 +181,39 @@ body {
     box-shadow: 4px 4px 0 var(--border-color);
 }
 
+.info-indicators {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem 2rem 0;
+}
+
+.info-indicator {
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.65rem 1rem;
+    min-width: 11rem;
+    min-height: 3.25rem;
+    border: 3px solid var(--border-color);
+    border-radius: 8px;
+    cursor: default;
+    box-shadow: 4px 4px 0 var(--border-color);
+    color: var(--border-color);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.info-indicator--ok {
+    background-color: #6fcf4a;
+}
+
+.info-indicator--fail {
+    background-color: #eb5757;
+    color: #fff;
+}
+
 .game-container {
     display: flex;
     flex: 1;

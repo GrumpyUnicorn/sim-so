@@ -1,3 +1,4 @@
+import { updateGreenspaceIndicator } from './InfoIndicators.js';
 import { ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
 export class UIManager {
@@ -8,6 +9,7 @@ export class UIManager {
         this.dwellingsElement = document.getElementById('total-dwellings');
         this.toolsContainer = document.getElementById('tools-container');
         this.tooltip = document.getElementById('cell-tooltip');
+        this.gronskaIndicator = document.getElementById('indicator-gronska');
 
         this.cellElements = [];
         this.isMouseDown = false;
@@ -15,6 +17,7 @@ export class UIManager {
         this.initTools();
         this.initGrid();
         this.setupEventListeners();
+        this.updateInfoIndicators();
     }
 
     initTools() {
@@ -170,5 +173,11 @@ export class UIManager {
 
     updateCounter() {
         this.dwellingsElement.textContent = this.gameState.totalDwellings.toLocaleString('sv-SE');
+        this.updateInfoIndicators();
+    }
+
+    updateInfoIndicators() {
+        const { grid, cols, rows } = this.gameState;
+        updateGreenspaceIndicator(this.gronskaIndicator, grid, cols, rows);
     }
 }
