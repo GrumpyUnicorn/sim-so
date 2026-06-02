@@ -1,4 +1,7 @@
 :root {
+    /* Toolbar + map panel share one fixed height (7 tools × 3.25rem + gaps + header + padding) */
+    --game-panel-height: 34.125rem;
+
     /* Retro Color Palette */
     --bg-color: #f4ecd8; /* Paper-like off-white */
     --border-color: #1a1a1a; /* Ink black */
@@ -192,6 +195,8 @@ body {
 /* Toolbar */
 .toolbar {
     width: 280px;
+    height: var(--game-panel-height);
+    box-sizing: border-box;
     background-color: #fff;
     border: 4px solid var(--border-color);
     border-radius: 8px;
@@ -264,6 +269,8 @@ body {
 .board-wrapper {
     position: relative;
     flex: 1;
+    height: var(--game-panel-height);
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -294,9 +301,11 @@ body {
     gap: 2px;
     background-color: var(--border-color);
     border: 4px solid var(--border-color);
-    width: 100%;
     aspect-ratio: 26 / 10.5;
-    max-height: 70vh;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 /* External Road Graphic (West Border) */
