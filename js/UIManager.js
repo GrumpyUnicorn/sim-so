@@ -1,4 +1,4 @@
-import { updateGreenspaceIndicator } from './InfoIndicators.js';
+import { updateFyrsparsavtaletIndicator, updateGreenspaceIndicator } from './InfoIndicators.js';
 import { ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
 export class UIManager {
@@ -10,6 +10,7 @@ export class UIManager {
         this.toolsContainer = document.getElementById('tools-container');
         this.tooltip = document.getElementById('cell-tooltip');
         this.gronskaIndicator = document.getElementById('indicator-gronska');
+        this.fyrsparsavtaletIndicator = document.getElementById('indicator-fyrsparsavtalet');
 
         this.cellElements = [];
         this.isMouseDown = false;
@@ -177,7 +178,8 @@ export class UIManager {
     }
 
     updateInfoIndicators() {
-        const { grid, cols, rows } = this.gameState;
+        const { grid, cols, rows, totalDwellings } = this.gameState;
         updateGreenspaceIndicator(this.gronskaIndicator, grid, cols, rows);
+        updateFyrsparsavtaletIndicator(this.fyrsparsavtaletIndicator, totalDwellings);
     }
 }

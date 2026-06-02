@@ -52,6 +52,22 @@ export function updateGreenspaceIndicator(element, grid, cols, rows) {
     if (!element) return;
 
     const ok = allDwellingsWithinParkRadius(grid, cols, rows);
+    setIndicatorState(element, ok);
+}
+
+/** Fyrspårsavtalet: green once total new dwellings exceeds this threshold. */
+export const FYRSPARSAVTALET_DWELLING_THRESHOLD = 21500;
+
+export function isFyrsparsavtaletMet(totalDwellings) {
+    return totalDwellings > FYRSPARSAVTALET_DWELLING_THRESHOLD;
+}
+
+export function updateFyrsparsavtaletIndicator(element, totalDwellings) {
+    if (!element) return;
+    setIndicatorState(element, isFyrsparsavtaletMet(totalDwellings));
+}
+
+function setIndicatorState(element, ok) {
     element.classList.toggle('info-indicator--ok', ok);
     element.classList.toggle('info-indicator--fail', !ok);
     element.setAttribute('aria-pressed', ok ? 'true' : 'false');
