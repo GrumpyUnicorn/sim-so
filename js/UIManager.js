@@ -1,10 +1,4 @@
-import {
-    CONGESTION_SCALE_MAX,
-    CONGESTION_THRESHOLDS,
-    SCALE_TOOLTIPS,
-    ZONING_IDS,
-    ZoningTypes
-} from './BuildingTypes.js';
+import { ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
 export class UIManager {
     constructor(gameState) {
@@ -14,71 +8,13 @@ export class UIManager {
         this.dwellingsElement = document.getElementById('total-dwellings');
         this.toolsContainer = document.getElementById('tools-container');
         this.tooltip = document.getElementById('cell-tooltip');
-        this.congestionMeter = document.getElementById('congestion-meter');
-        this.congestionIndicator = document.getElementById('congestion-indicator');
-        this.zoneSweet = document.getElementById('zone-sweet');
-        this.zoneBilvagg = document.getElementById('zone-bilvagg');
-        this.zoneKollektivvagg = document.getElementById('zone-kollektivvagg');
 
-        this.isGridlocked = false;
-        
         this.cellElements = [];
         this.isMouseDown = false;
-        
+
         this.initTools();
         this.initGrid();
-        this.initCongestionMeter();
         this.setupEventListeners();
-        this.updateCongestionMeter();
-    }
-
-    initCongestionMeter() {
-        const bindScaleTooltip = (el, text) => {
-            el.addEventListener('mouseenter', (e) => this.showScaleTooltip(text, e));
-            el.addEventListener('mousemove', (e) => this.moveTooltip(e));
-            el.addEventListener('mouseleave', () => this.hideTooltip());
-        };
-        bindScaleTooltip(this.zoneSweet, SCALE_TOOLTIPS.sweet);
-        bindScaleTooltip(this.zoneBilvagg, SCALE_TOOLTIPS.bilvagg);
-        bindScaleTooltip(this.zoneKollektivvagg, SCALE_TOOLTIPS.kollektivvagg);
-    }
-
-    showScaleTooltip(text, e) {
-        this.tooltip.replaceChildren();
-        this.tooltip.className = 'cell-tooltip cell-tooltip--scale';
-        this.tooltip.textContent = text;
-        this.tooltip.style.display = 'block';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
-    }
-
-    updateCongestionMeter() {
-        const total = this.gameState.totalDwellings;
-        const pct = Math.min(100, (total / CONGESTION_SCALE_MAX) * 100);
-        this.congestionIndicator.style.left = `${pct}%`;
-
-        const overBilvagg = total > CONGESTION_THRESHOLDS.BILVAGG;
-        const overKollektivvagg = total > CONGESTION_THRESHOLDS.KOLLEKTIVVAGG;
-
-        this.isGridlocked = overKollektivvagg;
-
-        this.congestionMeter.classList.toggle('congestion-meter--bilvagg-warning', overBilvagg && !overKollektivvagg);
-        this.congestionMeter.classList.toggle('congestion-meter--kollektivvagg-warning', overKollektivvagg);
-        this.congestionMeter.classList.toggle('congestion-meter--gridlocked', this.isGridlocked);
-
-        if (overKollektivvagg) {
-            this.checkTrafficCrisis(total);
-        } else if (overBilvagg) {
-            this.checkTrafficCrisis(total);
-        }
-    }
-
-    checkTrafficCrisis(totalBostader) {
-        if (totalBostader > CONGESTION_THRESHOLDS.KOLLEKTIVVAGG) {
-            console.warn(`[Kollektivväggen] ${totalBostader} bostäder — systemkollaps för gummihjul. Spårväg krävs.`);
-        } else if (totalBostader > CONGESTION_THRESHOLDS.BILVAGG) {
-            console.warn(`[Bilväggen] ${totalBostader} bostäder — bilkörfälten har slagit i taket.`);
-        }
     }
 
     initTools() {
@@ -86,10 +22,10 @@ export class UIManager {
             const btn = document.createElement('button');
             btn.className = `tool-btn ${this.activeTool.id === zone.id ? 'active' : ''}`;
             btn.dataset.toolId = zone.id;
-            
+
             const nameSpan = document.createElement('span');
             nameSpan.textContent = zone.name;
-            
+
             const colorBox = document.createElement('div');
             colorBox.className = `tool-color-box ${zone.colorClass} cell-tier-${zone.density}`;
 
@@ -130,7 +66,7 @@ export class UIManager {
                 cell.className = `grid-cell ${cellData.colorClass} ${tierClass}`.trim();
                 cell.dataset.x = x;
                 cell.dataset.y = y;
-                
+
                 cell.addEventListener('mouseenter', (e) => this.handleCellTooltip(x, y, e));
                 cell.addEventListener('mousemove', (e) => this.moveTooltip(e));
                 cell.addEventListener('mouseleave', () => this.hideTooltip());
@@ -234,6 +170,5 @@ export class UIManager {
 
     updateCounter() {
         this.dwellingsElement.textContent = this.gameState.totalDwellings.toLocaleString('sv-SE');
-        this.updateCongestionMeter();
     }
 }

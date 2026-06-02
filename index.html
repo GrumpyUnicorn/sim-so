@@ -35,9 +35,9 @@
     </header>
 
     <main class="game-container">
-        <!-- Toolbar for Zoning -->
+        <!-- Verklyg -->
         <aside class="toolbar" id="toolbar">
-            <h2>Zoning Tools</h2>
+            <h2>Verklyg</h2>
             <div id="tools-container"></div>
         </aside>
 
@@ -67,42 +67,6 @@
             </div>
         </section>
     </main>
-
-    <section class="congestion-meter" id="congestion-meter" aria-label="Boulevardens transportkapacitet">
-        <div class="congestion-meter__header">
-            <span class="congestion-meter__title">Boulevardens kapacitet</span>
-            <span class="congestion-meter__range">0 – 25&nbsp;000 bostäder</span>
-        </div>
-        <div class="congestion-track-outer">
-            <div class="congestion-track" id="congestion-track">
-                <div class="congestion-zone congestion-zone--green" id="zone-sweet" data-zone="sweet">
-                    <span class="congestion-zone__badge">Den gyllene medelvägen</span>
-                    <span class="congestion-zone__label">Cykel, Bil &amp; Vanlig Buss</span>
-                </div>
-                <div class="congestion-zone congestion-zone--bilvagg congestion-zone--dormant" id="zone-bilvagg" data-zone="bilvagg">
-                    <span class="congestion-zone__lock" aria-hidden="true">🔒</span>
-                    <span class="congestion-zone__label">Bilväggen nådd</span>
-                </div>
-                <div class="congestion-zone congestion-zone--kollektivvagg congestion-zone--dormant" id="zone-kollektivvagg" data-zone="kollektivvagg">
-                    <span class="congestion-zone__lock" aria-hidden="true">🔒</span>
-                    <span class="congestion-zone__label">Kollektivväggen nådd!</span>
-                </div>
-                <div class="congestion-indicator" id="congestion-indicator" aria-hidden="true">
-                    <svg class="congestion-indicator__arrow" viewBox="0 0 28 38" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 38 L4 26 L9 26 L9 2 C9 1 10 0 11 0 L17 0 C18 0 19 1 19 2 L19 26 L24 26 Z" fill="#ffcc00" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/>
-                        <circle cx="14" cy="13" r="4" fill="#1a1a1a"/>
-                    </svg>
-                </div>
-            </div>
-            <div class="congestion-ticks">
-                <span>0</span>
-                <span>12&nbsp;000</span>
-                <span>18&nbsp;000</span>
-                <span>21&nbsp;000</span>
-                <span>25&nbsp;000</span>
-            </div>
-        </div>
-    </section>
 
     <!-- Custom tooltip -->
     <div id="cell-tooltip" class="cell-tooltip"></div>
