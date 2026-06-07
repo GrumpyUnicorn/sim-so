@@ -72,72 +72,41 @@
         </button>
         </div>
 
-        <div class="info-indicators__controls">
-            <div class="planning-flipper">
-                <span class="planning-flipper__label">Boulevard</span>
-                <div
-                    class="segment-flipper"
-                    id="boulevard-flipper"
-                    role="radiogroup"
-                    aria-label="Boulevard"
+        <div class="kollektivtrafik-flipper">
+            <span class="kollektivtrafik-flipper__label">Kollektivtrafik</span>
+            <div
+                class="segment-flipper"
+                id="kollektivtrafik-flipper"
+                role="radiogroup"
+                aria-label="Kollektivtrafik"
+            >
+                <button
+                    type="button"
+                    class="segment-flipper__option segment-flipper__option--active"
+                    role="radio"
+                    aria-checked="true"
+                    data-mode="buss"
                 >
-                    <button
-                        type="button"
-                        class="segment-flipper__option segment-flipper__option--active"
-                        role="radio"
-                        aria-checked="true"
-                        data-mode="rak"
-                    >
-                        Rak
-                    </button>
-                    <button
-                        type="button"
-                        class="segment-flipper__option"
-                        role="radio"
-                        aria-checked="false"
-                        data-mode="bruten"
-                    >
-                        Bruten
-                    </button>
-                </div>
-            </div>
-
-            <div class="planning-flipper">
-                <span class="planning-flipper__label">Kollektivtrafik</span>
-                <div
-                    class="segment-flipper"
-                    id="kollektivtrafik-flipper"
-                    role="radiogroup"
-                    aria-label="Kollektivtrafik"
+                    Buss
+                </button>
+                <button
+                    type="button"
+                    class="segment-flipper__option"
+                    role="radio"
+                    aria-checked="false"
+                    data-mode="brt"
                 >
-                    <button
-                        type="button"
-                        class="segment-flipper__option segment-flipper__option--active"
-                        role="radio"
-                        aria-checked="true"
-                        data-mode="buss"
-                    >
-                        Buss
-                    </button>
-                    <button
-                        type="button"
-                        class="segment-flipper__option"
-                        role="radio"
-                        aria-checked="false"
-                        data-mode="brt"
-                    >
-                        BRT
-                    </button>
-                    <button
-                        type="button"
-                        class="segment-flipper__option"
-                        role="radio"
-                        aria-checked="false"
-                        data-mode="sparvagn"
-                    >
-                        Spårvagn
-                    </button>
-                </div>
+                    BRT
+                </button>
+                <button
+                    type="button"
+                    class="segment-flipper__option"
+                    role="radio"
+                    aria-checked="false"
+                    data-mode="sparvagn"
+                >
+                    Spårvagn
+                </button>
             </div>
         </div>
     </section>
