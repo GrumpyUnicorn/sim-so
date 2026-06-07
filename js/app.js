@@ -2,7 +2,7 @@ import { GameState } from './GameState.js';
 import { UIManager } from './UIManager.js';
 
 const TILE_THEME_STORAGE_KEY = 'sim-se-tile-theme';
-const DEFAULT_TILE_THEME = 'illustrated';
+const DEFAULT_TILE_THEME = 'topdown';
 
 function initTileThemeSelector() {
     const select = document.getElementById('tile-theme-select');
