@@ -1,8 +1,10 @@
+import { formatMirroredStationsnaraParagraph } from './ComparisonStations.js';
 import {
     FYRSPARSAVTALET_TOOLTIP,
     GRONSKA_TOOLTIP,
     updateFyrsparsavtaletIndicator,
-    updateGreenspaceIndicator
+    updateGreenspaceIndicator,
+    updateStationsnaraIndicator
 } from './InfoIndicators.js';
 import { StaticFeatures, ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
@@ -16,6 +18,10 @@ export class UIManager {
         this.tooltip = document.getElementById('cell-tooltip');
         this.gronskaIndicator = document.getElementById('indicator-gronska');
         this.fyrsparsavtaletIndicator = document.getElementById('indicator-fyrsparsavtalet');
+        this.stationsnaraIndicator = document.getElementById('indicator-stationsnara');
+        this.stationsnaraCountElement = document.getElementById('stationsnara-count');
+        this.stationsnaraComparisonElement = document.getElementById('stationsnara-comparison');
+        this.stationsnaraState = null;
         this.stationBuilding = document.querySelector('.station-building');
 
         this.cellElements = [];
@@ -78,6 +84,11 @@ export class UIManager {
             this.fyrsparsavtaletIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
             this.fyrsparsavtaletIndicator.addEventListener('mouseleave', () => this.hideTooltip());
         }
+        if (this.stationsnaraIndicator) {
+            this.stationsnaraIndicator.addEventListener('mouseenter', (e) => this.showStationsnaraTooltip(e));
+            this.stationsnaraIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            this.stationsnaraIndicator.addEventListener('mouseleave', () => this.hideTooltip());
+        }
     }
 
     showGronskaTooltip(e) {
@@ -123,6 +134,28 @@ export class UIManager {
             block.textContent = paragraph;
             this.tooltip.appendChild(block);
         });
+
+        this.tooltip.style.display = 'flex';
+        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
+        this.moveTooltip(e);
+    }
+
+    showStationsnaraTooltip(e) {
+        const state = this.stationsnaraState;
+        if (!state) return;
+
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--zone cell-tooltip--detailed';
+
+        const description = document.createElement('p');
+        description.className = 'tooltip-section';
+        description.textContent = state.station.description;
+        this.tooltip.appendChild(description);
+
+        const mirrorNote = document.createElement('p');
+        mirrorNote.className = 'tooltip-section';
+        mirrorNote.textContent = formatMirroredStationsnaraParagraph(state.count);
+        this.tooltip.appendChild(mirrorNote);
 
         this.tooltip.style.display = 'flex';
         requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
@@ -289,5 +322,12 @@ export class UIManager {
         const { grid, cols, rows, totalDwellings } = this.gameState;
         updateGreenspaceIndicator(this.gronskaIndicator, grid, cols, rows);
         updateFyrsparsavtaletIndicator(this.fyrsparsavtaletIndicator, totalDwellings);
+        this.stationsnaraState = updateStationsnaraIndicator(
+            this.stationsnaraCountElement,
+            this.stationsnaraComparisonElement,
+            grid,
+            cols,
+            rows
+        );
     }
 }

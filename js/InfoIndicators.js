@@ -1,8 +1,16 @@
+import { findClosestComparisonStation } from './ComparisonStations.js';
+
 /** Meters per grid cell (≈ 1 ha tiles; density is quoted per hectare). */
 export const METERS_PER_CELL = 100;
 
 /** Max distance to green space for the 3-30-300 greenspace rule. */
 export const PARK_ACCESS_RADIUS_M = 300;
+
+/** Max distance to Bergsbrunna station for stationsnära bostäder. */
+export const STATION_NEAR_RADIUS_M = 400;
+
+/** Station sits on the boulevard, just east of the grid (0-based row index). */
+export const STATION_GRID_Y = 3;
 
 export const GRONSKA_TOOLTIP = {
     intro: 'För att dina invånare ska må bra och staden ska klara klimatkrisen måste du uppfylla tre gröna mål:',
@@ -96,6 +104,39 @@ export function isFyrsparsavtaletMet(totalDwellings) {
 export function updateFyrsparsavtaletIndicator(element, totalDwellings) {
     if (!element) return;
     setIndicatorState(element, isFyrsparsavtaletMet(totalDwellings));
+}
+
+/** Sum dwellings on cells within 400 m of the station (east of boulevard). */
+export function countDwellingsNearStation(grid, cols, rows) {
+    const stationX = cols;
+    const stationY = STATION_GRID_Y;
+    let total = 0;
+
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const density = grid[y][x].density || 0;
+            if (density <= 0) continue;
+            if (distanceMeters(x, y, stationX, stationY) <= STATION_NEAR_RADIUS_M) {
+                total += density;
+            }
+        }
+    }
+
+    return total;
+}
+
+export function updateStationsnaraIndicator(valueElement, comparisonElement, grid, cols, rows) {
+    if (!valueElement) return null;
+
+    const count = countDwellingsNearStation(grid, cols, rows);
+    const station = findClosestComparisonStation(count);
+
+    valueElement.textContent = count.toLocaleString('sv-SE');
+    if (comparisonElement) {
+        comparisonElement.textContent = `(${station.name})`;
+    }
+
+    return { station, count };
 }
 
 function setIndicatorState(element, ok) {

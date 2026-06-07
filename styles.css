@@ -226,6 +226,37 @@ body {
     color: #fff;
 }
 
+.info-indicator--stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.35rem;
+    background-color: #fff;
+    text-transform: none;
+}
+
+.info-indicator__label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.info-indicator__value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1;
+}
+
+.info-indicator__comparison {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-left: 0.35rem;
+}
+
 .game-container {
     display: flex;
     flex: 1;
