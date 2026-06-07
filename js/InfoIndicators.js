@@ -139,7 +139,15 @@ export function updateStationsnaraIndicator(valueElement, comparisonElement, gri
     return { station, count };
 }
 
-/** Trafikläge thresholds based on total new dwellings. */
+/** Stationsnära bostäder count at half weight for boulevard traffic impact. */
+export const STATION_NEAR_TRAFFIC_WEIGHT = 0.5;
+
+/** Effective dwelling count for Trafikläge (stationsnära at 50%). */
+export function countTrafficImpactDwellings(totalDwellings, stationsnaraDwellings) {
+    return totalDwellings - stationsnaraDwellings * (1 - STATION_NEAR_TRAFFIC_WEIGHT);
+}
+
+/** Trafikläge thresholds based on traffic-weighted dwellings. */
 export const TRAFIKLAGE_GREEN_MAX = 7000;
 export const TRAFIKLAGE_YELLOW_MAX = 12000;
 
@@ -150,16 +158,18 @@ export const TRAFIKLAGE_LABELS = {
 };
 
 /** @returns {'ok' | 'warn' | 'fail'} */
-export function getTrafiklageLevel(totalDwellings) {
-    if (totalDwellings <= TRAFIKLAGE_GREEN_MAX) return 'ok';
-    if (totalDwellings <= TRAFIKLAGE_YELLOW_MAX) return 'warn';
+export function getTrafiklageLevel(trafficDwellings) {
+    if (trafficDwellings <= TRAFIKLAGE_GREEN_MAX) return 'ok';
+    if (trafficDwellings <= TRAFIKLAGE_YELLOW_MAX) return 'warn';
     return 'fail';
 }
 
-export function updateTrafiklageIndicator(element, statusElement, totalDwellings) {
+export function updateTrafiklageIndicator(element, statusElement, grid, cols, rows, totalDwellings) {
     if (!element) return;
 
-    const level = getTrafiklageLevel(totalDwellings);
+    const stationsnara = countDwellingsNearStation(grid, cols, rows);
+    const trafficDwellings = countTrafficImpactDwellings(totalDwellings, stationsnara);
+    const level = getTrafiklageLevel(trafficDwellings);
     element.classList.toggle('info-indicator--ok', level === 'ok');
     element.classList.toggle('info-indicator--warn', level === 'warn');
     element.classList.toggle('info-indicator--fail', level === 'fail');

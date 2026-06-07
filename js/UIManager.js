@@ -325,7 +325,14 @@ export class UIManager {
         const { grid, cols, rows, totalDwellings } = this.gameState;
         updateGreenspaceIndicator(this.gronskaIndicator, grid, cols, rows);
         updateFyrsparsavtaletIndicator(this.fyrsparsavtaletIndicator, totalDwellings);
-        updateTrafiklageIndicator(this.trafiklageIndicator, this.trafiklageStatusElement, totalDwellings);
+        updateTrafiklageIndicator(
+            this.trafiklageIndicator,
+            this.trafiklageStatusElement,
+            grid,
+            cols,
+            rows,
+            totalDwellings
+        );
         this.stationsnaraState = updateStationsnaraIndicator(
             this.stationsnaraCountElement,
             this.stationsnaraComparisonElement,
