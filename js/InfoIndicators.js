@@ -98,7 +98,7 @@ export const FYRSPARSAVTALET_TOOLTIP = [
 export const FYRSPARSAVTALET_DWELLING_THRESHOLD = 21500;
 
 export function isFyrsparsavtaletMet(totalDwellings) {
-    return totalDwellings > FYRSPARSAVTALET_DWELLING_THRESHOLD;
+    return totalDwellings >= FYRSPARSAVTALET_DWELLING_THRESHOLD;
 }
 
 export function updateFyrsparsavtaletIndicator(element, totalDwellings) {
@@ -137,6 +137,37 @@ export function updateStationsnaraIndicator(valueElement, comparisonElement, gri
     }
 
     return { station, count };
+}
+
+/** Trafikläge thresholds based on total new dwellings. */
+export const TRAFIKLAGE_GREEN_MAX = 7000;
+export const TRAFIKLAGE_YELLOW_MAX = 12000;
+
+export const TRAFIKLAGE_LABELS = {
+    ok: 'Trafiken flyter på',
+    warn: 'Bilköer',
+    fail: 'systemkolaps'
+};
+
+/** @returns {'ok' | 'warn' | 'fail'} */
+export function getTrafiklageLevel(totalDwellings) {
+    if (totalDwellings <= TRAFIKLAGE_GREEN_MAX) return 'ok';
+    if (totalDwellings <= TRAFIKLAGE_YELLOW_MAX) return 'warn';
+    return 'fail';
+}
+
+export function updateTrafiklageIndicator(element, statusElement, totalDwellings) {
+    if (!element) return;
+
+    const level = getTrafiklageLevel(totalDwellings);
+    element.classList.toggle('info-indicator--ok', level === 'ok');
+    element.classList.toggle('info-indicator--warn', level === 'warn');
+    element.classList.toggle('info-indicator--fail', level === 'fail');
+    element.setAttribute('aria-pressed', level === 'ok' ? 'true' : 'false');
+
+    if (statusElement) {
+        statusElement.textContent = TRAFIKLAGE_LABELS[level];
+    }
 }
 
 function setIndicatorState(element, ok) {

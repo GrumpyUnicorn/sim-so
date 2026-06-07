@@ -4,7 +4,8 @@ import {
     GRONSKA_TOOLTIP,
     updateFyrsparsavtaletIndicator,
     updateGreenspaceIndicator,
-    updateStationsnaraIndicator
+    updateStationsnaraIndicator,
+    updateTrafiklageIndicator
 } from './InfoIndicators.js';
 import { StaticFeatures, ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
@@ -22,6 +23,8 @@ export class UIManager {
         this.stationsnaraCountElement = document.getElementById('stationsnara-count');
         this.stationsnaraComparisonElement = document.getElementById('stationsnara-comparison');
         this.stationsnaraState = null;
+        this.trafiklageIndicator = document.getElementById('indicator-trafiklage');
+        this.trafiklageStatusElement = document.getElementById('trafiklage-status');
         this.stationBuilding = document.querySelector('.station-building');
 
         this.cellElements = [];
@@ -322,6 +325,7 @@ export class UIManager {
         const { grid, cols, rows, totalDwellings } = this.gameState;
         updateGreenspaceIndicator(this.gronskaIndicator, grid, cols, rows);
         updateFyrsparsavtaletIndicator(this.fyrsparsavtaletIndicator, totalDwellings);
+        updateTrafiklageIndicator(this.trafiklageIndicator, this.trafiklageStatusElement, totalDwellings);
         this.stationsnaraState = updateStationsnaraIndicator(
             this.stationsnaraCountElement,
             this.stationsnaraComparisonElement,

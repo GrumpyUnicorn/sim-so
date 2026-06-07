@@ -196,8 +196,73 @@ body {
 .info-indicators {
     display: flex;
     flex-wrap: wrap;
+    align-items: stretch;
     gap: 0.75rem;
     padding: 1rem 2rem 0;
+}
+
+.info-indicators__group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.kollektivtrafik-flipper {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 3.25rem;
+}
+
+.kollektivtrafik-flipper__label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    color: var(--border-color);
+}
+
+.segment-flipper {
+    display: flex;
+    border: 3px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--border-color);
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.segment-flipper__option {
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.65rem 0.85rem;
+    min-width: 4.5rem;
+    border: none;
+    border-right: 3px solid var(--border-color);
+    background-color: #fff;
+    color: var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.segment-flipper__option:last-child {
+    border-right: none;
+}
+
+.segment-flipper__option--active {
+    background-color: var(--border-color);
+    color: #fff;
+}
+
+.segment-flipper__option:focus-visible {
+    outline: 2px solid var(--border-color);
+    outline-offset: -2px;
 }
 
 .info-indicator {
@@ -224,6 +289,19 @@ body {
 .info-indicator--fail {
     background-color: #eb5757;
     color: #fff;
+}
+
+.info-indicator--warn {
+    background-color: #f2c94c;
+}
+
+.info-indicator--labeled {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.35rem;
+    text-transform: none;
 }
 
 .info-indicator--stat {
