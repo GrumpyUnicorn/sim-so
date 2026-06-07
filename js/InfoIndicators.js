@@ -158,10 +158,22 @@ export const TRAFIKLAGE_LABELS = {
 };
 
 /** @returns {'ok' | 'warn' | 'fail'} */
-export function getTrafiklageLevel(trafficDwellings) {
-    if (trafficDwellings <= TRAFIKLAGE_GREEN_MAX) return 'ok';
-    if (trafficDwellings <= TRAFIKLAGE_YELLOW_MAX) return 'warn';
-    return 'fail';
+export function getTrafiklageLevel(trafficDwellings, kollektivtrafikMode = 'buss') {
+    let level;
+    if (trafficDwellings <= TRAFIKLAGE_GREEN_MAX) level = 'ok';
+    else if (trafficDwellings <= TRAFIKLAGE_YELLOW_MAX) level = 'warn';
+    else level = 'fail';
+
+    if (level === 'fail' && kollektivtrafikMode !== 'buss') {
+        level = 'warn';
+    }
+
+    return level;
+}
+
+export function getKollektivtrafikMode() {
+    const mode = document.getElementById('kollektivtrafik-flipper')?.dataset.mode;
+    return mode === 'brt' || mode === 'sparvagn' ? mode : 'buss';
 }
 
 export function updateTrafiklageIndicator(element, statusElement, grid, cols, rows, totalDwellings) {
@@ -169,7 +181,7 @@ export function updateTrafiklageIndicator(element, statusElement, grid, cols, ro
 
     const stationsnara = countDwellingsNearStation(grid, cols, rows);
     const trafficDwellings = countTrafficImpactDwellings(totalDwellings, stationsnara);
-    const level = getTrafiklageLevel(trafficDwellings);
+    const level = getTrafiklageLevel(trafficDwellings, getKollektivtrafikMode());
     element.classList.toggle('info-indicator--ok', level === 'ok');
     element.classList.toggle('info-indicator--warn', level === 'warn');
     element.classList.toggle('info-indicator--fail', level === 'fail');

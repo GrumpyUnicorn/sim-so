@@ -34,6 +34,7 @@ export class UIManager {
         this.initGrid();
         this.initInfoIndicatorTooltips();
         this.initStationTooltip();
+        this.initKollektivtrafikListener();
         this.setupEventListeners();
         this.updateInfoIndicators();
     }
@@ -74,6 +75,13 @@ export class UIManager {
 
         this.tooltip.style.left = `${left}px`;
         this.tooltip.style.top = `${top}px`;
+    }
+
+    initKollektivtrafikListener() {
+        const flipper = document.getElementById('kollektivtrafik-flipper');
+        if (!flipper) return;
+
+        flipper.addEventListener('click', () => this.updateInfoIndicators());
     }
 
     initInfoIndicatorTooltips() {
