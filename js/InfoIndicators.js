@@ -4,6 +4,25 @@ export const METERS_PER_CELL = 100;
 /** Max distance to green space for the 3-30-300 greenspace rule. */
 export const PARK_ACCESS_RADIUS_M = 300;
 
+export const GRONSKA_TOOLTIP = {
+    intro: 'För att dina invånare ska må bra och staden ska klara klimatkrisen måste du uppfylla tre gröna mål:',
+    goals: [
+        {
+            label: '3 träd',
+            text: 'Varje invånare ska kunna se minst 3 träd från sitt fönster.'
+        },
+        {
+            label: '30 % krontäckning',
+            text: 'Minst 30 % av varje stadsdel måste täckas av lummiga trädkronor.'
+        },
+        {
+            label: '300 meter',
+            text: 'Ingen invånare ska ha mer än 300 meter till närmaste park.'
+        }
+    ],
+    footer: 'I spelet antas 3 och 30 hanteras lokalt, men 300-målet är ditt ansvar. För att rymma lek, vila, motion och biologisk mångfald duger inte småparker.'
+};
+
 const PARK_CELL_IDS = new Set(['woodland', 'pond']);
 
 function isParkCell(cell) {

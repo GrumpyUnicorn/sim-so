@@ -1,4 +1,8 @@
-import { updateFyrsparsavtaletIndicator, updateGreenspaceIndicator } from './InfoIndicators.js';
+import {
+    GRONSKA_TOOLTIP,
+    updateFyrsparsavtaletIndicator,
+    updateGreenspaceIndicator
+} from './InfoIndicators.js';
 import { ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
 export class UIManager {
@@ -17,8 +21,49 @@ export class UIManager {
 
         this.initTools();
         this.initGrid();
+        this.initInfoIndicatorTooltips();
         this.setupEventListeners();
         this.updateInfoIndicators();
+    }
+
+    initInfoIndicatorTooltips() {
+        if (!this.gronskaIndicator) return;
+        this.gronskaIndicator.addEventListener('mouseenter', (e) => this.showGronskaTooltip(e));
+        this.gronskaIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+        this.gronskaIndicator.addEventListener('mouseleave', () => this.hideTooltip());
+    }
+
+    showGronskaTooltip(e) {
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--zone cell-tooltip--detailed';
+
+        const intro = document.createElement('p');
+        intro.className = 'tooltip-section';
+        intro.textContent = GRONSKA_TOOLTIP.intro;
+        this.tooltip.appendChild(intro);
+
+        GRONSKA_TOOLTIP.goals.forEach((goal) => {
+            const block = document.createElement('div');
+            block.className = 'tooltip-section';
+            const label = document.createElement('span');
+            label.className = 'tooltip-label';
+            label.textContent = `${goal.label}: `;
+            const text = document.createElement('span');
+            text.className = 'tooltip-text';
+            text.textContent = goal.text;
+            block.appendChild(label);
+            block.appendChild(text);
+            this.tooltip.appendChild(block);
+        });
+
+        const footer = document.createElement('p');
+        footer.className = 'tooltip-section';
+        footer.textContent = GRONSKA_TOOLTIP.footer;
+        this.tooltip.appendChild(footer);
+
+        this.tooltip.style.display = 'flex';
+        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
+        this.moveTooltip(e);
     }
 
     initTools() {

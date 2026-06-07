@@ -87,6 +87,10 @@
     gap: 0.55rem;
 }
 
+.cell-tooltip p.tooltip-section {
+    margin: 0;
+}
+
 .cell-tooltip .tooltip-section {
     font-size: 0.7rem;
     line-height: 1.45;
