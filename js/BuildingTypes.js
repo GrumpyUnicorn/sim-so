@@ -139,7 +139,14 @@ export const ZONING_IDS = new Set(Object.values(ZoningTypes).map((zone) => zone.
 export const StaticFeatures = {
     EMPTY: { id: 'empty', density: 0, colorClass: 'cell-empty' },
     BOULEVARD: { id: 'boulevard', density: 0, colorClass: 'cell-boulevard', buildable: false, name: 'Boulevard' },
-    STATION: { id: 'station', density: 0, colorClass: 'cell-station', buildable: false, name: 'Station' },
+    STATION: {
+        id: 'station',
+        density: 0,
+        colorClass: 'cell-station',
+        buildable: false,
+        name: 'Station',
+        tooltip: 'Bergsbrunna station planneras stå färdig 2034'
+    },
     BLOCKED: { id: 'blocked', density: 0, colorClass: 'cell-blocked', buildable: false, name: 'Existerande Sävja' },
     POND: { id: 'pond', density: 0, colorClass: 'cell-pond', buildable: false, name: 'Stordammen' }
 };

@@ -4,7 +4,7 @@ import {
     updateFyrsparsavtaletIndicator,
     updateGreenspaceIndicator
 } from './InfoIndicators.js';
-import { ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
+import { StaticFeatures, ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
 export class UIManager {
     constructor(gameState) {
@@ -16,6 +16,7 @@ export class UIManager {
         this.tooltip = document.getElementById('cell-tooltip');
         this.gronskaIndicator = document.getElementById('indicator-gronska');
         this.fyrsparsavtaletIndicator = document.getElementById('indicator-fyrsparsavtalet');
+        this.stationBuilding = document.querySelector('.station-building');
 
         this.cellElements = [];
         this.isMouseDown = false;
@@ -23,8 +24,47 @@ export class UIManager {
         this.initTools();
         this.initGrid();
         this.initInfoIndicatorTooltips();
+        this.initStationTooltip();
         this.setupEventListeners();
         this.updateInfoIndicators();
+    }
+
+    initStationTooltip() {
+        const text = StaticFeatures.STATION.tooltip;
+        if (!this.stationBuilding || !text) return;
+
+        this.stationBuilding.addEventListener('mouseenter', () => this.showStationTooltip(text));
+        this.stationBuilding.addEventListener('mouseleave', () => this.hideTooltip());
+    }
+
+    showStationTooltip(text) {
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--station';
+        const label = document.createElement('span');
+        label.textContent = text;
+        this.tooltip.appendChild(label);
+        this.tooltip.style.display = 'block';
+        requestAnimationFrame(() => {
+            this.positionStationTooltip();
+            this.tooltip.style.opacity = '1';
+        });
+    }
+
+    positionStationTooltip() {
+        if (!this.stationBuilding) return;
+
+        const offset = 12;
+        const stationRect = this.stationBuilding.getBoundingClientRect();
+        const tipRect = this.tooltip.getBoundingClientRect();
+
+        let left = stationRect.left - tipRect.width - offset;
+        let top = stationRect.top + (stationRect.height - tipRect.height) / 2;
+
+        left = Math.max(8, left);
+        top = Math.max(8, Math.min(top, window.innerHeight - tipRect.height - 8));
+
+        this.tooltip.style.left = `${left}px`;
+        this.tooltip.style.top = `${top}px`;
     }
 
     initInfoIndicatorTooltips() {

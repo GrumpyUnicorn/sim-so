@@ -49,6 +49,14 @@
     display: none;
 }
 
+.cell-tooltip--station {
+    white-space: normal;
+    max-width: 280px;
+    text-transform: none;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
 .cell-tooltip--zone {
     white-space: normal;
     max-width: 300px;
@@ -422,6 +430,7 @@ body {
 }
 
 .station-building {
+    cursor: help;
     position: absolute;
     /* Boulevard is row index 3 (4th row). Total 10 rows. Center is 35%. */
     top: 35%;
