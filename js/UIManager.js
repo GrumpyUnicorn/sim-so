@@ -1,4 +1,5 @@
 import {
+    FYRSPARSAVTALET_TOOLTIP,
     GRONSKA_TOOLTIP,
     updateFyrsparsavtaletIndicator,
     updateGreenspaceIndicator
@@ -27,10 +28,16 @@ export class UIManager {
     }
 
     initInfoIndicatorTooltips() {
-        if (!this.gronskaIndicator) return;
-        this.gronskaIndicator.addEventListener('mouseenter', (e) => this.showGronskaTooltip(e));
-        this.gronskaIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
-        this.gronskaIndicator.addEventListener('mouseleave', () => this.hideTooltip());
+        if (this.gronskaIndicator) {
+            this.gronskaIndicator.addEventListener('mouseenter', (e) => this.showGronskaTooltip(e));
+            this.gronskaIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            this.gronskaIndicator.addEventListener('mouseleave', () => this.hideTooltip());
+        }
+        if (this.fyrsparsavtaletIndicator) {
+            this.fyrsparsavtaletIndicator.addEventListener('mouseenter', (e) => this.showFyrsparsavtaletTooltip(e));
+            this.fyrsparsavtaletIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            this.fyrsparsavtaletIndicator.addEventListener('mouseleave', () => this.hideTooltip());
+        }
     }
 
     showGronskaTooltip(e) {
@@ -60,6 +67,22 @@ export class UIManager {
         footer.className = 'tooltip-section';
         footer.textContent = GRONSKA_TOOLTIP.footer;
         this.tooltip.appendChild(footer);
+
+        this.tooltip.style.display = 'flex';
+        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
+        this.moveTooltip(e);
+    }
+
+    showFyrsparsavtaletTooltip(e) {
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--zone cell-tooltip--detailed';
+
+        FYRSPARSAVTALET_TOOLTIP.forEach((paragraph) => {
+            const block = document.createElement('p');
+            block.className = 'tooltip-section';
+            block.textContent = paragraph;
+            this.tooltip.appendChild(block);
+        });
 
         this.tooltip.style.display = 'flex';
         requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });

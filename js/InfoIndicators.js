@@ -39,8 +39,18 @@ function distanceMeters(x1, y1, x2, y2) {
     return Math.hypot(dx, dy);
 }
 
+/** Distance from a cell to the southern border (Lunsens naturreservat), treated as greenery. */
+function distanceToSouthBorderMeters(y, rows) {
+    return (rows - y) * METERS_PER_CELL;
+}
+
+function isWithinParkRadius(x, y, parks, rows) {
+    if (distanceToSouthBorderMeters(y, rows) <= PARK_ACCESS_RADIUS_M) return true;
+    return parks.some((park) => distanceMeters(x, y, park.x, park.y) <= PARK_ACCESS_RADIUS_M);
+}
+
 /**
- * True when every residential cell has park (woodland/pond) within 300 m.
+ * True when every residential cell has park (woodland/pond) or the southern border within 300 m.
  * Vacuously true if there are no dwellings yet.
  */
 export function allDwellingsWithinParkRadius(grid, cols, rows) {
@@ -60,11 +70,8 @@ export function allDwellingsWithinParkRadius(grid, cols, rows) {
     }
 
     if (residential.length === 0) return true;
-    if (parks.length === 0) return false;
 
-    return residential.every(({ x, y }) =>
-        parks.some((park) => distanceMeters(x, y, park.x, park.y) <= PARK_ACCESS_RADIUS_M)
-    );
+    return residential.every(({ x, y }) => isWithinParkRadius(x, y, parks, rows));
 }
 
 export function updateGreenspaceIndicator(element, grid, cols, rows) {
@@ -73,6 +80,11 @@ export function updateGreenspaceIndicator(element, grid, cols, rows) {
     const ok = allDwellingsWithinParkRadius(grid, cols, rows);
     setIndicatorState(element, ok);
 }
+
+export const FYRSPARSAVTALET_TOOLTIP = [
+    'I december 2017 skrevs “Fyrspårsavtalet”. I korthet ställde den socialdemokratiskt ledda regeringen ett ultimatum till den socialdemokratiskt ledda Uppsala kommun. Om ni inte startar ett massivt och tätt bostadsbyggande på 33.000 nya bostäder (utöver de 20.000+ ni redan planerat) så kommer vi inte att bygga fyra järnvägsspår från länsgränsen (söder om Knivsta).',
+    '21.500 av dessa nya bostäder ska enligt avtalet ligga i spelområdet. Om du bygger färre än 21.500 bostäder så uppfyller du inte avtalets intentioner.'
+];
 
 /** Fyrspårsavtalet: green once total new dwellings exceeds this threshold. */
 export const FYRSPARSAVTALET_DWELLING_THRESHOLD = 21500;
