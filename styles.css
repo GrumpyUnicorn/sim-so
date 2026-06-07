@@ -208,8 +208,15 @@ body {
     flex: 1;
 }
 
-.kollektivtrafik-flipper {
+.info-indicators__controls {
     margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.planning-flipper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -217,7 +224,7 @@ body {
     min-height: 3.25rem;
 }
 
-.kollektivtrafik-flipper__label {
+.planning-flipper__label {
     font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;

@@ -3,6 +3,9 @@ import { UIManager } from './UIManager.js';
 
 const TILE_THEME_STORAGE_KEY = 'sim-se-tile-theme';
 const DEFAULT_TILE_THEME = 'topdown';
+const BOULEVARD_STORAGE_KEY = 'sim-se-boulevard';
+const DEFAULT_BOULEVARD = 'rak';
+const BOULEVARD_MODES = new Set(['rak', 'bruten']);
 const KOLLEKTIVTRAFIK_STORAGE_KEY = 'sim-se-kollektivtrafik';
 const DEFAULT_KOLLEKTIVTRAFIK = 'buss';
 const KOLLEKTIVTRAFIK_MODES = new Set(['buss', 'brt', 'sparvagn']);
@@ -23,16 +26,16 @@ function initTileThemeSelector() {
     });
 }
 
-function initKollektivtrafikFlipper() {
-    const flipper = document.getElementById('kollektivtrafik-flipper');
+function initSegmentFlipper(flipperId, storageKey, defaultMode, validModes) {
+    const flipper = document.getElementById(flipperId);
     if (!flipper) return;
 
     const options = [...flipper.querySelectorAll('.segment-flipper__option[data-mode]')];
-    const saved = localStorage.getItem(KOLLEKTIVTRAFIK_STORAGE_KEY);
-    const initialMode = KOLLEKTIVTRAFIK_MODES.has(saved) ? saved : DEFAULT_KOLLEKTIVTRAFIK;
+    const saved = localStorage.getItem(storageKey);
+    const initialMode = validModes.has(saved) ? saved : defaultMode;
 
     function setMode(mode) {
-        if (!KOLLEKTIVTRAFIK_MODES.has(mode)) return;
+        if (!validModes.has(mode)) return;
 
         options.forEach((option) => {
             const active = option.dataset.mode === mode;
@@ -41,7 +44,7 @@ function initKollektivtrafikFlipper() {
         });
 
         flipper.dataset.mode = mode;
-        localStorage.setItem(KOLLEKTIVTRAFIK_STORAGE_KEY, mode);
+        localStorage.setItem(storageKey, mode);
     }
 
     options.forEach((option) => {
@@ -53,7 +56,13 @@ function initKollektivtrafikFlipper() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initTileThemeSelector();
-    initKollektivtrafikFlipper();
+    initSegmentFlipper('boulevard-flipper', BOULEVARD_STORAGE_KEY, DEFAULT_BOULEVARD, BOULEVARD_MODES);
+    initSegmentFlipper(
+        'kollektivtrafik-flipper',
+        KOLLEKTIVTRAFIK_STORAGE_KEY,
+        DEFAULT_KOLLEKTIVTRAFIK,
+        KOLLEKTIVTRAFIK_MODES
+    );
 
     const gameState = new GameState(26, 11);
     const uiManager = new UIManager(gameState);
