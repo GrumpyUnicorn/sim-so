@@ -4,8 +4,7 @@ import {
     GRONSKA_TOOLTIP,
     updateFyrsparsavtaletIndicator,
     updateGreenspaceIndicator,
-    updateStationsnaraIndicator,
-    updateTrafiklageIndicator
+    updateStationsnaraIndicator
 } from './InfoIndicators.js';
 import { StaticFeatures, ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
@@ -23,8 +22,6 @@ export class UIManager {
         this.stationsnaraCountElement = document.getElementById('stationsnara-count');
         this.stationsnaraComparisonElement = document.getElementById('stationsnara-comparison');
         this.stationsnaraState = null;
-        this.trafiklageIndicator = document.getElementById('indicator-trafiklage');
-        this.trafiklageStatusElement = document.getElementById('trafiklage-status');
         this.stationBuilding = document.querySelector('.station-building');
 
         this.cellElements = [];
@@ -34,7 +31,6 @@ export class UIManager {
         this.initGrid();
         this.initInfoIndicatorTooltips();
         this.initStationTooltip();
-        this.initKollektivtrafikListener();
         this.setupEventListeners();
         this.updateInfoIndicators();
     }
@@ -75,13 +71,6 @@ export class UIManager {
 
         this.tooltip.style.left = `${left}px`;
         this.tooltip.style.top = `${top}px`;
-    }
-
-    initKollektivtrafikListener() {
-        const flipper = document.getElementById('kollektivtrafik-flipper');
-        if (!flipper) return;
-
-        flipper.addEventListener('click', () => this.updateInfoIndicators());
     }
 
     initInfoIndicatorTooltips() {
@@ -333,14 +322,6 @@ export class UIManager {
         const { grid, cols, rows, totalDwellings } = this.gameState;
         updateGreenspaceIndicator(this.gronskaIndicator, grid, cols, rows);
         updateFyrsparsavtaletIndicator(this.fyrsparsavtaletIndicator, totalDwellings);
-        updateTrafiklageIndicator(
-            this.trafiklageIndicator,
-            this.trafiklageStatusElement,
-            grid,
-            cols,
-            rows,
-            totalDwellings
-        );
         this.stationsnaraState = updateStationsnaraIndicator(
             this.stationsnaraCountElement,
             this.stationsnaraComparisonElement,

@@ -39,7 +39,6 @@
     </header>
 
     <section class="info-indicators" aria-label="Planeringsindikatorer">
-        <div class="info-indicators__group">
         <button
             type="button"
             class="info-indicator info-indicator--ok"
@@ -65,54 +64,6 @@
                 <span id="stationsnara-count">0</span><span class="info-indicator__comparison" id="stationsnara-comparison"></span>
             </span>
         </button>
-        <button
-            type="button"
-            class="info-indicator info-indicator--labeled info-indicator--ok"
-            id="indicator-trafiklage"
-            aria-live="polite"
-        >
-            <span class="info-indicator__label">Trafikläge</span>
-            <span class="info-indicator__value" id="trafiklage-status">Trafiken flyter på</span>
-        </button>
-        </div>
-
-        <div class="kollektivtrafik-flipper">
-            <span class="kollektivtrafik-flipper__label">Kollektivtrafik</span>
-            <div
-                class="segment-flipper"
-                id="kollektivtrafik-flipper"
-                role="radiogroup"
-                aria-label="Kollektivtrafik"
-            >
-                <button
-                    type="button"
-                    class="segment-flipper__option segment-flipper__option--active"
-                    role="radio"
-                    aria-checked="true"
-                    data-mode="buss"
-                >
-                    Buss
-                </button>
-                <button
-                    type="button"
-                    class="segment-flipper__option"
-                    role="radio"
-                    aria-checked="false"
-                    data-mode="brt"
-                >
-                    BRT
-                </button>
-                <button
-                    type="button"
-                    class="segment-flipper__option"
-                    role="radio"
-                    aria-checked="false"
-                    data-mode="sparvagn"
-                >
-                    Spårvagn
-                </button>
-            </div>
-        </div>
     </section>
 
     <main class="game-container">
