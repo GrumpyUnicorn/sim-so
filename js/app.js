@@ -51,7 +51,18 @@ function initKollektivtrafikFlipper() {
     setMode(initialMode);
 }
 
+function initSplashScreen() {
+    const splash = document.getElementById('splash-screen');
+    if (!splash) return;
+
+    splash.addEventListener('click', () => {
+        splash.classList.add('hidden');
+        setTimeout(() => { splash.style.display = 'none'; }, 400);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initSplashScreen();
     initTileThemeSelector();
     initKollektivtrafikFlipper();
 
