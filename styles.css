@@ -389,6 +389,10 @@ body {
     background-color: #6fcf4a;
 }
 
+.info-indicator--warn {
+    background-color: #f2c94c;
+}
+
 .info-indicator--fail {
     background-color: #eb5757;
     color: #fff;
