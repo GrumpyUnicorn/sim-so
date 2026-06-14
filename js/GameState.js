@@ -13,6 +13,7 @@ export class GameState {
     }
 
     initGrid() {
+        this.grid = [];
         for (let y = 0; y < this.rows; y++) {
             const row = [];
             for (let x = 0; x < this.cols; x++) {
@@ -81,5 +82,11 @@ export class GameState {
             }
         }
         this.totalDwellings = total;
+    }
+
+    resetToInitial() {
+        this.initGrid();
+        this.applyStaticFeatures();
+        this.calculateTotal();
     }
 }

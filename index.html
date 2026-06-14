@@ -60,6 +60,7 @@
     </header>
 
     <section class="info-indicators" aria-label="Planeringsindikatorer">
+        <div class="info-indicators__group">
         <button
             type="button"
             class="info-indicator info-indicator--ok"
@@ -85,6 +86,13 @@
                 <span id="stationsnara-count">0</span><span class="info-indicator__comparison" id="stationsnara-comparison"></span>
             </span>
         </button>
+        </div>
+
+        <div class="info-actions">
+            <button type="button" class="info-action" id="action-reset">Återställ</button>
+            <button type="button" class="info-action" id="action-share">Klar &amp; Dela!</button>
+            <button type="button" class="info-action" id="action-faq">Frågor och svar</button>
+        </div>
     </section>
 
     <main class="game-container">
@@ -122,6 +130,17 @@
 
     <!-- Custom tooltip -->
     <div id="cell-tooltip" class="cell-tooltip"></div>
+
+    <dialog id="faq-dialog" class="faq-dialog" aria-labelledby="faq-dialog-title">
+        <div class="faq-dialog__panel">
+            <header class="faq-dialog__header">
+                <h2 id="faq-dialog-title" class="faq-dialog__title">Frågor och svar</h2>
+                <button type="button" class="faq-dialog__close" id="faq-dialog-close" aria-label="Stäng">×</button>
+            </header>
+            <div id="faq-dialog-content" class="faq-dialog__content"></div>
+        </div>
+    </dialog>
+
     <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
 import { formatMirroredStationsnaraParagraph } from './ComparisonStations.js';
+import { FAQ_ITEMS } from './Faq.js';
 import {
     FYRSPARSAVTALET_TOOLTIP,
     GRONSKA_TOOLTIP,
@@ -7,6 +8,12 @@ import {
     updateStationsnaraIndicator
 } from './InfoIndicators.js';
 import { StaticFeatures, ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
+
+const ACTION_TOOLTIPS = {
+    reset: 'Återställ sydöstra till skog och börja om ditt stadsplanerande.',
+    share: 'När du är nöjd med din plan för framtidens sydöstra Uppsala kan du skapa en länk och dela din plan med vänner.',
+    faq: 'Frågor och svar om den här webbsidan.'
+};
 
 export class UIManager {
     constructor(gameState) {
@@ -23,13 +30,21 @@ export class UIManager {
         this.stationsnaraComparisonElement = document.getElementById('stationsnara-comparison');
         this.stationsnaraState = null;
         this.stationBuilding = document.querySelector('.station-building');
+        this.resetButton = document.getElementById('action-reset');
+        this.shareButton = document.getElementById('action-share');
+        this.faqButton = document.getElementById('action-faq');
+        this.faqDialog = document.getElementById('faq-dialog');
+        this.faqDialogContent = document.getElementById('faq-dialog-content');
+        this.faqDialogClose = document.getElementById('faq-dialog-close');
 
         this.cellElements = [];
         this.isMouseDown = false;
+        this.faqRendered = false;
 
         this.initTools();
         this.initGrid();
         this.initInfoIndicatorTooltips();
+        this.initActionButtons();
         this.initStationTooltip();
         this.setupEventListeners();
         this.updateInfoIndicators();
@@ -160,6 +175,106 @@ export class UIManager {
         this.tooltip.style.display = 'flex';
         requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
         this.moveTooltip(e);
+    }
+
+    initActionButtons() {
+        this.bindActionTooltip(this.resetButton, ACTION_TOOLTIPS.reset);
+        this.bindActionTooltip(this.shareButton, ACTION_TOOLTIPS.share);
+        this.bindActionTooltip(this.faqButton, ACTION_TOOLTIPS.faq);
+
+        if (this.resetButton) {
+            this.resetButton.addEventListener('click', () => this.resetGrid());
+        }
+        if (this.shareButton) {
+            this.shareButton.addEventListener('click', () => this.handleSharePlan());
+        }
+        if (this.faqButton) {
+            this.faqButton.addEventListener('click', () => this.openFaqDialog());
+        }
+        if (this.faqDialogClose) {
+            this.faqDialogClose.addEventListener('click', () => this.closeFaqDialog());
+        }
+        if (this.faqDialog) {
+            this.faqDialog.addEventListener('click', (e) => {
+                if (e.target === this.faqDialog) this.closeFaqDialog();
+            });
+            this.faqDialog.addEventListener('cancel', (e) => {
+                e.preventDefault();
+                this.closeFaqDialog();
+            });
+        }
+    }
+
+    bindActionTooltip(button, text) {
+        if (!button) return;
+        button.addEventListener('mouseenter', (e) => this.showActionTooltip(text, e));
+        button.addEventListener('mousemove', (e) => this.moveTooltip(e));
+        button.addEventListener('mouseleave', () => this.hideTooltip());
+    }
+
+    showActionTooltip(text, e) {
+        this.tooltip.replaceChildren();
+        this.tooltip.className = 'cell-tooltip cell-tooltip--station';
+        const label = document.createElement('span');
+        label.textContent = text;
+        this.tooltip.appendChild(label);
+        this.tooltip.style.display = 'block';
+        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
+        this.moveTooltip(e);
+    }
+
+    resetGrid() {
+        this.gameState.resetToInitial();
+
+        for (let y = 0; y < this.gameState.rows; y++) {
+            for (let x = 0; x < this.gameState.cols; x++) {
+                const cellData = this.gameState.grid[y][x];
+                const cellElement = this.cellElements[y]?.[x];
+                if (!cellElement) continue;
+                const tierClass = this.getTierClassForCell(cellData);
+                cellElement.className = `grid-cell ${cellData.colorClass} ${tierClass}`.trim();
+            }
+        }
+
+        this.updateCounter();
+    }
+
+    handleSharePlan() {
+        // Share link flow will be added later.
+    }
+
+    renderFaqContent() {
+        if (!this.faqDialogContent || this.faqRendered) return;
+
+        FAQ_ITEMS.forEach((item) => {
+            const block = document.createElement('section');
+            block.className = 'faq-item';
+
+            const question = document.createElement('h3');
+            question.className = 'faq-item__question';
+            question.textContent = item.question;
+
+            const answer = document.createElement('p');
+            answer.className = 'faq-item__answer';
+            answer.textContent = item.answer;
+
+            block.appendChild(question);
+            block.appendChild(answer);
+            this.faqDialogContent.appendChild(block);
+        });
+
+        this.faqRendered = true;
+    }
+
+    openFaqDialog() {
+        if (!this.faqDialog) return;
+        this.renderFaqContent();
+        this.hideTooltip();
+        this.faqDialog.showModal();
+    }
+
+    closeFaqDialog() {
+        this.faqDialog?.close();
     }
 
     initTools() {
