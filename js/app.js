@@ -1,5 +1,5 @@
 import { GameState } from './GameState.js';
-import { loadPlanFromUrl } from './PlanShare.js';
+import { getSharedGreetingFromUrl, loadPlanFromUrl } from './PlanShare.js';
 import { UIManager } from './UIManager.js';
 
 const TILE_THEME_STORAGE_KEY = 'sim-se-tile-theme';
@@ -21,6 +21,34 @@ function initTileThemeSelector() {
     });
 }
 
+function initSharedSplashContent() {
+    const { name, message } = getSharedGreetingFromUrl();
+    if (!name && !message) return false;
+
+    const thirdBubble = document.querySelector('.splash-bubble--third p');
+    const fourthBubble = document.querySelector('.splash-bubble--fourth p');
+    const fifthBubble = document.querySelector('.splash-bubble--fifth');
+
+    if (!thirdBubble || !fourthBubble || !fifthBubble) return false;
+
+    if (name && message) {
+        thirdBubble.textContent =
+            `${name} har använt den här förenklade stadsplaningssimulatorn för att göra ett eget förslag. ${name} beskriver sitt förslag så här: "${message}".`;
+    } else if (name) {
+        thirdBubble.textContent =
+            `${name} har använt den här förenklade stadsplaningssimulatorn för att göra ett eget förslag. Klicka för att se det.`;
+    } else {
+        thirdBubble.textContent =
+            `Den som skickade den här länken till dig har använt den här förenklade stadsplaningssimulatorn för att göra ett eget förslag som den beskriver så här: "${message}"`;
+    }
+
+    fourthBubble.textContent =
+        'Du kan också planera en stad du tror bli bra och se hur många bostäder det blir. Simulatorn förenklar naturligtvis – i verkligheten är området naturligtvis inte en stor rektangel.';
+    fifthBubble.style.display = 'none';
+
+    return true;
+}
+
 function initSplashScreen() {
     const splash = document.getElementById('splash-screen');
     if (!splash) return;
@@ -32,10 +60,11 @@ function initSplashScreen() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const hasSharedGreeting = initSharedSplashContent();
     initSplashScreen();
     initTileThemeSelector();
 
     const gameState = new GameState(26, 11);
     loadPlanFromUrl(gameState);
-    const uiManager = new UIManager(gameState);
+    const uiManager = new UIManager(gameState, { showSharedGreeting: !hasSharedGreeting });
 });

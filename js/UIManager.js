@@ -17,8 +17,9 @@ const ACTION_TOOLTIPS = {
 };
 
 export class UIManager {
-    constructor(gameState) {
+    constructor(gameState, { showSharedGreeting = true } = {}) {
         this.gameState = gameState;
+        this.showSharedGreeting = showSharedGreeting;
         this.activeTool = ZoningTypes.SMAHUS; // Default tool
         this.gridElement = document.getElementById('game-grid');
         this.dwellingsElement = document.getElementById('total-dwellings');
@@ -58,7 +59,7 @@ export class UIManager {
         this.initStationTooltip();
         this.setupEventListeners();
         this.updateCounter();
-        this.showSharedGreetingIfPresent();
+        if (this.showSharedGreeting) this.showSharedGreetingIfPresent();
     }
 
     initStationTooltip() {
