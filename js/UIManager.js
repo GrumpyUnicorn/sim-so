@@ -17,9 +17,10 @@ const ACTION_TOOLTIPS = {
 };
 
 export class UIManager {
-    constructor(gameState, { showSharedGreeting = true } = {}) {
+    constructor(gameState, { showSharedGreeting = true, readOnly = false } = {}) {
         this.gameState = gameState;
         this.showSharedGreeting = showSharedGreeting;
+        this.readOnly = readOnly;
         this.activeTool = ZoningTypes.SMAHUS; // Default tool
         this.gridElement = document.getElementById('game-grid');
         this.dwellingsElement = document.getElementById('total-dwellings');
@@ -47,6 +48,7 @@ export class UIManager {
         this.shareDialogFeedback = document.getElementById('share-dialog-feedback');
         this.sharedGreeting = document.getElementById('shared-greeting');
         this.sharedGreetingText = document.getElementById('shared-greeting-text');
+        this.boardReadonlyOverlay = document.getElementById('board-readonly-overlay');
 
         this.cellElements = [];
         this.isMouseDown = false;
@@ -60,6 +62,25 @@ export class UIManager {
         this.setupEventListeners();
         this.updateCounter();
         if (this.showSharedGreeting) this.showSharedGreetingIfPresent();
+        if (this.readOnly) this.applyReadOnlyMode();
+    }
+
+    applyReadOnlyMode() {
+        if (this.boardReadonlyOverlay) this.boardReadonlyOverlay.hidden = false;
+
+        const toolbar = document.getElementById('toolbar');
+        if (toolbar) toolbar.setAttribute('aria-hidden', 'true');
+
+        [this.resetButton, this.shareButton].forEach((button) => {
+            if (!button) return;
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        });
+
+        document.querySelectorAll('.tool-btn').forEach((button) => {
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        });
     }
 
     initStationTooltip() {
@@ -342,6 +363,8 @@ export class UIManager {
     }
 
     resetGrid() {
+        if (this.readOnly) return;
+
         this.gameState.resetToInitial();
 
         for (let y = 0; y < this.gameState.rows; y++) {
@@ -358,6 +381,7 @@ export class UIManager {
     }
 
     handleSharePlan() {
+        if (this.readOnly) return;
         this.openShareDialog();
     }
 
@@ -486,6 +510,8 @@ export class UIManager {
     }
 
     setActiveTool(zone, btnElement) {
+        if (this.readOnly) return;
+
         this.activeTool = zone;
         document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
         btnElement.classList.add('active');
@@ -531,12 +557,16 @@ export class UIManager {
     }
 
     handleCellInteraction(x, y, cellElement, e) {
+        if (this.readOnly) return;
+
         // Only trigger on left click
         if (e.button !== 0) return;
         this.applyZone(x, y, cellElement, true);
     }
 
     handleCellEnter(x, y, cellElement, e) {
+        if (this.readOnly) return;
+
         if (this.isMouseDown) {
             this.applyZone(x, y, cellElement, false);
             this.handleCellTooltip(x, y, e);

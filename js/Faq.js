@@ -62,5 +62,10 @@ export const FAQ_ITEMS = [
         question: 'Vad gör Klar & Dela!?',
         answer:
             'Skapar en länk till din plan. En vän kan öppna länken och se exakt vad du byggt, prova egna förslag och dela en ny länk tillbaka. Du kan valfritt lägga till namn och hälsning — allt packas i den kodade länken och sparas inte på någon server.'
+    },
+    {
+        question: 'Fungerar simulatorn på mobil?',
+        answer:
+            'Du kan öppna en delad länk på mobilen och titta på planen, indikatorerna och kartmodellen. För att själv placera ut stadstyper fungerar det mycket bättre på laptop eller surfplatta i liggande läge.'
     }
 ];

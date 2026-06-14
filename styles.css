@@ -206,6 +206,16 @@
     animation-delay: 5s;
 }
 
+.splash-bubble--sixth {
+    left: 10%;
+    border-radius: 28px 34px 30px 26px / 34px 28px 32px 30px;
+    animation-delay: 6s;
+}
+
+.splash-bubble--mobile-only {
+    display: none;
+}
+
 .splash-bubble p {
     margin: 0;
 }
@@ -414,6 +424,50 @@ body {
 .info-action:active {
     transform: translate(1px, 1px);
     box-shadow: 2px 2px 0 var(--border-color);
+}
+
+.info-action:disabled,
+.tool-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+    box-shadow: 3px 3px 0 var(--border-color);
+}
+
+.board-readonly-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1rem 1.25rem 1.25rem;
+    background: linear-gradient(
+        to top,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.55) 45%,
+        transparent 75%
+    );
+    pointer-events: none;
+}
+
+.board-readonly-overlay[hidden] {
+    display: none;
+}
+
+.board-readonly-overlay__text {
+    margin: 0;
+    max-width: 28rem;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    border: 3px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 4px 4px 0 var(--border-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.45;
+    text-align: center;
 }
 
 .faq-dialog {
@@ -1335,4 +1389,41 @@ body {
 [data-tile-theme="tecknat"] .station-building {
     border-radius: 10px 8px 9px 11px / 8px 11px 7px 10px;
     box-shadow: 4px 4px 0 var(--border-color);
+}
+
+@media (max-width: 900px) {
+    .splash-bubble--first,
+    .splash-bubble--second,
+    .splash-bubble--third,
+    .splash-bubble--fourth,
+    .splash-bubble--fifth,
+    .splash-bubble--sixth {
+        left: 0;
+    }
+
+    .splash-bubble--mobile-only {
+        display: block;
+    }
+
+    .game-container {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    [data-mobile-readonly] .toolbar {
+        display: none;
+    }
+
+    .board-wrapper {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .game-header {
+        padding: 1rem;
+    }
+
+    .info-indicators {
+        padding: 0 1rem 0.75rem;
+    }
 }

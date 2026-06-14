@@ -1,4 +1,5 @@
 import { GameState } from './GameState.js';
+import { initMobileView, isMobileViewport } from './MobileView.js';
 import { getSharedGreetingFromUrl, loadPlanFromUrl } from './PlanShare.js';
 import { UIManager } from './UIManager.js';
 
@@ -42,8 +43,9 @@ function initSharedSplashContent() {
             `Den som skickade den här länken till dig har använt den här förenklade stadsplaningssimulatorn för att göra ett eget förslag som den beskriver så här: "${message}"`;
     }
 
-    fourthBubble.textContent =
-        'Du kan också planera en stad du tror bli bra och se hur många bostäder det blir. Simulatorn förenklar naturligtvis – i verkligheten är området naturligtvis inte en stor rektangel.';
+    fourthBubble.textContent = isMobileViewport()
+        ? 'Du kan titta på planen nedan. För att själv planera behöver du en laptop eller surfplatta i liggande läge.'
+        : 'Du kan också planera en stad du tror bli bra och se hur många bostäder det blir. Simulatorn förenklar naturligtvis – i verkligheten är området naturligtvis inte en stor rektangel.';
     fifthBubble.style.display = 'none';
 
     return true;
@@ -60,11 +62,15 @@ function initSplashScreen() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const isMobileReadOnly = initMobileView();
     const hasSharedGreeting = initSharedSplashContent();
     initSplashScreen();
     initTileThemeSelector();
 
     const gameState = new GameState(26, 11);
     loadPlanFromUrl(gameState);
-    const uiManager = new UIManager(gameState, { showSharedGreeting: !hasSharedGreeting });
+    const uiManager = new UIManager(gameState, {
+        showSharedGreeting: !hasSharedGreeting,
+        readOnly: isMobileReadOnly
+    });
 });
