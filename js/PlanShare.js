@@ -1,7 +1,14 @@
 import { ZoningTypes } from './BuildingTypes.js';
 
 export const PLAN_PARAM = 'p';
-const VERSION = 2;
+
+const PLAN_VERSION = 2;
+const SHARE_VERSION = 3;
+const MAX_NAME_LENGTH = 80;
+const MAX_MESSAGE_LENGTH = 500;
+
+const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder();
 
 const ZONE_ID_TO_CODE = {
     smahus: 1,
@@ -96,30 +103,29 @@ function unpackRun(packed) {
     };
 }
 
-export function encodePlan(grid, cols, rows) {
+function encodePlanBytes(grid, cols, rows) {
     const runs = buildRuns(grid, cols, rows);
-    if (!runs) return '';
+    if (!runs) return null;
 
     const bytes = new Uint8Array(3 + runs.length * 2);
-    bytes[0] = VERSION;
+    bytes[0] = PLAN_VERSION;
     bytes[1] = (runs.length >> 8) & 0xff;
     bytes[2] = runs.length & 0xff;
 
     for (let i = 0; i < runs.length; i++) {
         const packed = packRun(runs[i].length, runs[i].code);
-        if (packed === null) return '';
+        if (packed === null) return null;
 
         const offset = 3 + i * 2;
         bytes[offset] = (packed >> 8) & 0xff;
         bytes[offset + 1] = packed & 0xff;
     }
 
-    return toBase64Url(bytes);
+    return bytes;
 }
 
-export function decodePlan(encoded) {
-    const bytes = fromBase64Url(encoded);
-    if (!bytes || bytes.length < 3 || bytes[0] !== VERSION) return null;
+function decodePlanBytes(bytes) {
+    if (!bytes || bytes.length < 3 || bytes[0] !== PLAN_VERSION) return null;
 
     const runCount = (bytes[1] << 8) | bytes[2];
     if (runCount < 1 || bytes.length !== 3 + runCount * 2) return null;
@@ -138,10 +144,74 @@ export function decodePlan(encoded) {
     return runs;
 }
 
-export function applyPlanToGameState(gameState, encoded) {
-    const runs = decodePlan(encoded);
-    if (!runs) return false;
+function encodeUtf8Section(text, maxLength) {
+    const trimmed = text.trim().slice(0, maxLength);
+    return textEncoder.encode(trimmed);
+}
 
+function readUtf8Section(bytes, offset) {
+    if (offset + 2 > bytes.length) return null;
+
+    const length = (bytes[offset] << 8) | bytes[offset + 1];
+    const start = offset + 2;
+    const end = start + length;
+
+    if (length < 0 || end > bytes.length) return null;
+
+    return {
+        text: textDecoder.decode(bytes.subarray(start, end)),
+        nextOffset: end
+    };
+}
+
+function parseSharePayload(encoded) {
+    const bytes = fromBase64Url(encoded);
+    if (!bytes || bytes.length < 3) return null;
+
+    if (bytes[0] === SHARE_VERSION) {
+        if (bytes.length < 5) return null;
+
+        const planLength = (bytes[1] << 8) | bytes[2];
+        const planStart = 3;
+        const planEnd = planStart + planLength;
+
+        if (planLength < 3 || planEnd > bytes.length) return null;
+
+        const runs = decodePlanBytes(bytes.subarray(planStart, planEnd));
+        if (!runs) return null;
+
+        let offset = planEnd;
+        const nameSection = readUtf8Section(bytes, offset);
+        if (!nameSection) return null;
+
+        offset = nameSection.nextOffset;
+        const messageSection = readUtf8Section(bytes, offset);
+        if (!messageSection) return null;
+
+        if (messageSection.nextOffset !== bytes.length) return null;
+
+        return {
+            runs,
+            name: nameSection.text,
+            message: messageSection.text
+        };
+    }
+
+    if (bytes[0] === PLAN_VERSION) {
+        const runs = decodePlanBytes(bytes);
+        if (!runs) return null;
+
+        return {
+            runs,
+            name: '',
+            message: ''
+        };
+    }
+
+    return null;
+}
+
+function applyRunsToGameState(gameState, runs) {
     const { cols, rows } = gameState;
     gameState.resetToInitial();
 
@@ -174,14 +244,59 @@ export function applyPlanToGameState(gameState, encoded) {
     return true;
 }
 
-export function buildShareUrl(grid, cols, rows) {
+export function encodeSharePayload(grid, cols, rows, { name = '', message = '' } = {}) {
+    const planBytes = encodePlanBytes(grid, cols, rows);
+    if (!planBytes) return '';
+
+    const nameBytes = encodeUtf8Section(name, MAX_NAME_LENGTH);
+    const messageBytes = encodeUtf8Section(message, MAX_MESSAGE_LENGTH);
+
+    const bytes = new Uint8Array(3 + planBytes.length + 4 + nameBytes.length + messageBytes.length);
+    bytes[0] = SHARE_VERSION;
+    bytes[1] = (planBytes.length >> 8) & 0xff;
+    bytes[2] = planBytes.length & 0xff;
+    bytes.set(planBytes, 3);
+
+    let offset = 3 + planBytes.length;
+    bytes[offset] = (nameBytes.length >> 8) & 0xff;
+    bytes[offset + 1] = nameBytes.length & 0xff;
+    bytes.set(nameBytes, offset + 2);
+
+    offset += 2 + nameBytes.length;
+    bytes[offset] = (messageBytes.length >> 8) & 0xff;
+    bytes[offset + 1] = messageBytes.length & 0xff;
+    bytes.set(messageBytes, offset + 2);
+
+    return toBase64Url(bytes);
+}
+
+export function buildShareUrl(grid, cols, rows, { name = '', message = '' } = {}) {
     const url = new URL(window.location.href);
-    url.searchParams.set(PLAN_PARAM, encodePlan(grid, cols, rows));
+    url.searchParams.set(PLAN_PARAM, encodeSharePayload(grid, cols, rows, { name, message }));
+    url.searchParams.delete('n');
+    url.searchParams.delete('m');
     return url.toString();
+}
+
+export function getSharedGreetingFromUrl() {
+    const encoded = new URL(window.location.href).searchParams.get(PLAN_PARAM);
+    if (!encoded) return { name: '', message: '' };
+
+    const payload = parseSharePayload(encoded);
+    if (!payload) return { name: '', message: '' };
+
+    return {
+        name: payload.name,
+        message: payload.message
+    };
 }
 
 export function loadPlanFromUrl(gameState) {
     const encoded = new URL(window.location.href).searchParams.get(PLAN_PARAM);
     if (!encoded) return false;
-    return applyPlanToGameState(gameState, encoded);
+
+    const payload = parseSharePayload(encoded);
+    if (!payload) return false;
+
+    return applyRunsToGameState(gameState, payload.runs);
 }

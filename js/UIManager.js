@@ -1,6 +1,6 @@
 import { formatMirroredStationsnaraParagraph } from './ComparisonStations.js';
 import { FAQ_ITEMS } from './Faq.js';
-import { buildShareUrl } from './PlanShare.js';
+import { buildShareUrl, getSharedGreetingFromUrl } from './PlanShare.js';
 import {
     FYRSPARSAVTALET_TOOLTIP,
     GRONSKA_TOOLTIP,
@@ -12,7 +12,7 @@ import { StaticFeatures, ZONING_IDS, ZoningTypes } from './BuildingTypes.js';
 
 const ACTION_TOOLTIPS = {
     reset: 'Återställ sydöstra till skog och börja om ditt stadsplanerande.',
-    share: 'När du är nöjd med din plan för framtidens sydöstra Uppsala kan du skapa en länk och dela din plan med vänner.',
+    share: 'När du är nöjd med din plan för sydöstra Uppsalas utveckling kan du dela den med vänner via en länk.',
     faq: 'Frågor och svar om den här webbsidan.'
 };
 
@@ -38,10 +38,14 @@ export class UIManager {
         this.faqDialogContent = document.getElementById('faq-dialog-content');
         this.faqDialogClose = document.getElementById('faq-dialog-close');
         this.shareDialog = document.getElementById('share-dialog');
+        this.shareDialogName = document.getElementById('share-dialog-name');
+        this.shareDialogMessage = document.getElementById('share-dialog-message');
         this.shareDialogLink = document.getElementById('share-dialog-link');
         this.shareDialogCopy = document.getElementById('share-dialog-copy');
         this.shareDialogClose = document.getElementById('share-dialog-close');
         this.shareDialogFeedback = document.getElementById('share-dialog-feedback');
+        this.sharedGreeting = document.getElementById('shared-greeting');
+        this.sharedGreetingText = document.getElementById('shared-greeting-text');
 
         this.cellElements = [];
         this.isMouseDown = false;
@@ -54,6 +58,7 @@ export class UIManager {
         this.initStationTooltip();
         this.setupEventListeners();
         this.updateCounter();
+        this.showSharedGreetingIfPresent();
     }
 
     initStationTooltip() {
@@ -215,6 +220,12 @@ export class UIManager {
         if (this.shareDialogCopy) {
             this.shareDialogCopy.addEventListener('click', () => this.copyShareLink());
         }
+        if (this.shareDialogName) {
+            this.shareDialogName.addEventListener('input', () => this.updateShareLink());
+        }
+        if (this.shareDialogMessage) {
+            this.shareDialogMessage.addEventListener('input', () => this.updateShareLink());
+        }
         if (this.shareDialog) {
             this.shareDialog.addEventListener('click', (e) => {
                 if (e.target === this.shareDialog) this.closeShareDialog();
@@ -293,11 +304,37 @@ export class UIManager {
     openShareDialog() {
         if (!this.shareDialog || !this.shareDialogLink) return;
 
-        const { grid, cols, rows } = this.gameState;
-        this.shareDialogLink.value = buildShareUrl(grid, cols, rows);
+        if (this.shareDialogName) this.shareDialogName.value = '';
+        if (this.shareDialogMessage) this.shareDialogMessage.value = '';
+        this.updateShareLink();
         this.shareDialogFeedback.hidden = true;
         this.hideTooltip();
         this.shareDialog.showModal();
+    }
+
+    updateShareLink() {
+        if (!this.shareDialogLink) return;
+
+        const { grid, cols, rows } = this.gameState;
+        const name = this.shareDialogName?.value ?? '';
+        const message = this.shareDialogMessage?.value ?? '';
+        this.shareDialogLink.value = buildShareUrl(grid, cols, rows, { name, message });
+    }
+
+    showSharedGreetingIfPresent() {
+        const { name, message } = getSharedGreetingFromUrl();
+        if (!name && !message) return;
+        if (!this.sharedGreeting || !this.sharedGreetingText) return;
+
+        if (name && message) {
+            this.sharedGreetingText.textContent = `${name} delade sin plan med hälsningen: ”${message}”`;
+        } else if (name) {
+            this.sharedGreetingText.textContent = `${name} delade sin plan för sydöstra Uppsala.`;
+        } else {
+            this.sharedGreetingText.textContent = `Hälsning: ”${message}”`;
+        }
+
+        this.sharedGreeting.hidden = false;
     }
 
     closeShareDialog() {

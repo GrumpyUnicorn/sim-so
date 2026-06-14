@@ -69,6 +69,10 @@
         </div>
     </header>
 
+    <div id="shared-greeting" class="shared-greeting" hidden>
+        <p id="shared-greeting-text" class="shared-greeting__text"></p>
+    </div>
+
     <section class="info-indicators" aria-label="Planeringsindikatorer">
         <div class="info-indicators__group">
         <button
@@ -159,11 +163,12 @@
             </header>
             <div class="faq-dialog__content share-dialog__content">
                 <p class="share-dialog__intro">
-                    Skapa en länk till din plan. En vän kan öppna den, se exakt vad du byggt och prova egna förslag — och dela en ny länk tillbaka.
+                    När du är nöjd med din plan för sydöstra Uppsalas utveckling kan du dela den. Länken nedanför kan du dela med vänner som kan se ditt förslag och bygga ett eget. Du kan även skicka med en hälsning. (All info finns i länken, inget sparas på någon server.)
                 </p>
-                <p class="share-dialog__hint">
-                    På Facebook: förhandsvisningen visar simulatorn i stort, inte din exakta karta. Skriv gärna en egen kommentar om din plan, till exempel hur många bostäder du fick och om Uppsalapaketet blev grönt.
-                </p>
+                <label class="share-dialog__label" for="share-dialog-name">Ditt namn (valfritt)</label>
+                <input type="text" id="share-dialog-name" class="share-dialog__input" maxlength="80" autocomplete="name">
+                <label class="share-dialog__label" for="share-dialog-message">Hälsning till den som får länken (valfritt)</label>
+                <textarea id="share-dialog-message" class="share-dialog__input share-dialog__textarea" maxlength="500" rows="3"></textarea>
                 <label class="share-dialog__label" for="share-dialog-link">Din länk</label>
                 <div class="share-dialog__link-row">
                     <input type="text" id="share-dialog-link" class="share-dialog__input" readonly>

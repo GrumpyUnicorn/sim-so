@@ -490,19 +490,13 @@ body {
     letter-spacing: 0;
 }
 
-.share-dialog__intro,
-.share-dialog__hint {
+.share-dialog__intro {
     margin: 0;
     font-size: 0.85rem;
     line-height: 1.5;
     font-weight: 400;
     text-transform: none;
     letter-spacing: 0;
-}
-
-.share-dialog__hint {
-    color: #555;
-    font-style: italic;
 }
 
 .share-dialog__label {
@@ -520,7 +514,7 @@ body {
 }
 
 .share-dialog__input {
-    flex: 1 1 14rem;
+    width: 100%;
     min-width: 0;
     font-family: inherit;
     font-size: 0.8rem;
@@ -529,6 +523,37 @@ body {
     border-radius: 8px;
     background-color: #fff;
     color: var(--border-color);
+}
+
+.share-dialog__textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+    line-height: 1.45;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.share-dialog__link-row .share-dialog__input {
+    flex: 1 1 14rem;
+}
+
+.shared-greeting {
+    margin: 0 2rem;
+    padding: 0.85rem 1rem;
+    border: 3px solid var(--border-color);
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 4px 4px 0 var(--border-color);
+}
+
+.shared-greeting__text {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .share-dialog__copy {

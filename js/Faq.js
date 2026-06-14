@@ -36,7 +36,7 @@ export const FAQ_ITEMS = [
     {
         question: 'Sparas min plan eller mina uppgifter någonstans?',
         answer:
-            'Nej, inte på någon server. Allt körs lokalt i din webbläsare. Om du delar en länk med Klar & Dela! ligger din plan kodad i webbadressen — men ingen data skickas till oss eller lagras någon annanstans.'
+            'Nej, inte på någon server. Allt körs lokalt i din webbläsare. Om du delar en länk med Klar & Dela! ligger din plan, och eventuellt namn och hälsning, kodade i webbadressen — men ingen data skickas till oss eller lagras någon annanstans.'
     },
     {
         question: 'Sätter sidan några cookies?',
@@ -56,6 +56,6 @@ export const FAQ_ITEMS = [
     {
         question: 'Vad gör Klar & Dela!?',
         answer:
-            'Skapar en länk till din plan. En vän kan öppna länken och se exakt vad du byggt, prova egna förslag och dela en ny länk tillbaka. På Facebook visas samma förhandsvisning för alla länkar — skriv gärna en egen kommentar om din plan när du delar.'
+            'Skapar en länk till din plan. En vän kan öppna länken och se exakt vad du byggt, prova egna förslag och dela en ny länk tillbaka. Du kan valfritt lägga till namn och hälsning — allt packas i den kodade länken och sparas inte på någon server.'
     }
 ];
