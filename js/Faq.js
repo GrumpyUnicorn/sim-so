@@ -9,6 +9,11 @@ export const FAQ_ITEMS = [
             'En förenklad planeringssimulator för Sydöstra Uppsala. Du kan placera olika stadstyper på rutnätet, se hur många bostäder planen ger och jämföra stationsnära bostäder med befintliga stationsområden.'
     },
     {
+        question: 'Vad är kartmodell?',
+        answer:
+            'Kartmodell är menyn uppe till höger där du väljer hur rutnätet ritas. ”Platta färger” visar enkla, rena färgrutor. ”Top down” är standardläget med en mer kartliknande vy. ”Tecknat” ger en illustrerad, serietidningsinspirerad stil som matchar introduktionen.'
+    },
+    {
         question: 'Vad betyder Grönska (3-30-300)?',
         answer:
             'Indikatorn följer 300-metersregeln: ingen bostad ska ligga längre än 300 meter från park eller skog. Simulatorn varnar med gult om någon bostad har mer än 200 meter till närmaste grönområde.'
@@ -31,7 +36,7 @@ export const FAQ_ITEMS = [
     {
         question: 'Sparas min plan eller mina uppgifter någonstans?',
         answer:
-            'Nej. Simulatorn sparar ingen information alls — varken din plan, personuppgifter eller annan data. Allt körs lokalt i din webbläsare och försvinner när du laddar om sidan eller stänger fliken.'
+            'Nej, inte på någon server. Allt körs lokalt i din webbläsare. Om du delar en länk med Klar & Dela! ligger din plan kodad i webbadressen — men ingen data skickas till oss eller lagras någon annanstans.'
     },
     {
         question: 'Hur fungerar Återställ?',
@@ -46,6 +51,6 @@ export const FAQ_ITEMS = [
     {
         question: 'Vad gör Klar & Dela!?',
         answer:
-            'Funktionen för att skapa och dela en länk till din plan kommer snart.'
+            'Skapar en länk till din plan. En vän kan öppna länken och se exakt vad du byggt, prova egna förslag och dela en ny länk tillbaka. På Facebook visas samma förhandsvisning för alla länkar — skriv gärna en egen kommentar om din plan när du delar.'
     }
 ];

@@ -1,4 +1,5 @@
 import { GameState } from './GameState.js';
+import { loadPlanFromUrl } from './PlanShare.js';
 import { UIManager } from './UIManager.js';
 
 const TILE_THEME_STORAGE_KEY = 'sim-se-tile-theme';
@@ -35,5 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTileThemeSelector();
 
     const gameState = new GameState(26, 11);
+    loadPlanFromUrl(gameState);
     const uiManager = new UIManager(gameState);
 });

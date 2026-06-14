@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plannera ditt eget Sydöstra Uppsala!</title>
+    <title>Planera Sydöstra Uppsala — 21 500 nya bostäder</title>
+    <meta name="description" content="Bygg din egen plan för Sydöstra Uppsala. Se om du når 21 500 bostäder, grönska och stationsnära mål — och dela länken med vänner.">
+    <meta property="og:title" content="Planera Sydöstra Uppsala — 21 500 nya bostäder">
+    <meta property="og:description" content="En enkel planeringssimulator: prova hur 21 500 nya bostäder skulle kunna se ut mellan Lunsen, Sävja och Bergsbrunna. Bygg, jämför och dela din plan.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="sim-so-bg.png">
+    <meta property="og:locale" content="sv_SE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Planera Sydöstra Uppsala — 21 500 nya bostäder">
+    <meta name="twitter:description" content="Bygg din egen plan för Sydöstra Uppsala och dela länken med vänner.">
+    <meta name="twitter:image" content="sim-so-bg.png">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -45,8 +55,8 @@
         <h1>Planera Sydöstra Uppsala</h1>
         <div class="header-controls">
             <div class="theme-select-wrap">
-                <label class="theme-select-label" for="tile-theme-select">Rututseende</label>
-                <select id="tile-theme-select" class="theme-select" aria-label="Välj hur rutorna visas">
+                <label class="theme-select-label" for="tile-theme-select">Kartmodell</label>
+                <select id="tile-theme-select" class="theme-select" aria-label="Välj kartmodell">
                     <option value="flat">Platta färger</option>
                     <option value="topdown">Top down</option>
                     <option value="tecknat">Tecknat</option>
@@ -138,6 +148,29 @@
                 <button type="button" class="faq-dialog__close" id="faq-dialog-close" aria-label="Stäng">×</button>
             </header>
             <div id="faq-dialog-content" class="faq-dialog__content"></div>
+        </div>
+    </dialog>
+
+    <dialog id="share-dialog" class="faq-dialog" aria-labelledby="share-dialog-title">
+        <div class="faq-dialog__panel">
+            <header class="faq-dialog__header">
+                <h2 id="share-dialog-title" class="faq-dialog__title">Klar &amp; Dela!</h2>
+                <button type="button" class="faq-dialog__close" id="share-dialog-close" aria-label="Stäng">×</button>
+            </header>
+            <div class="faq-dialog__content share-dialog__content">
+                <p class="share-dialog__intro">
+                    Skapa en länk till din plan. En vän kan öppna den, se exakt vad du byggt och prova egna förslag — och dela en ny länk tillbaka.
+                </p>
+                <p class="share-dialog__hint">
+                    På Facebook: förhandsvisningen visar simulatorn i stort, inte din exakta karta. Skriv gärna en egen kommentar om din plan, till exempel hur många bostäder du fick och om Uppsalapaketet blev grönt.
+                </p>
+                <label class="share-dialog__label" for="share-dialog-link">Din länk</label>
+                <div class="share-dialog__link-row">
+                    <input type="text" id="share-dialog-link" class="share-dialog__input" readonly>
+                    <button type="button" id="share-dialog-copy" class="info-action share-dialog__copy">Kopiera länk</button>
+                </div>
+                <p id="share-dialog-feedback" class="share-dialog__feedback" hidden aria-live="polite">Kopierad!</p>
+            </div>
         </div>
     </dialog>
 

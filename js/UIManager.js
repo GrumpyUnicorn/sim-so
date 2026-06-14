@@ -1,5 +1,6 @@
 import { formatMirroredStationsnaraParagraph } from './ComparisonStations.js';
 import { FAQ_ITEMS } from './Faq.js';
+import { buildShareUrl } from './PlanShare.js';
 import {
     FYRSPARSAVTALET_TOOLTIP,
     GRONSKA_TOOLTIP,
@@ -36,6 +37,11 @@ export class UIManager {
         this.faqDialog = document.getElementById('faq-dialog');
         this.faqDialogContent = document.getElementById('faq-dialog-content');
         this.faqDialogClose = document.getElementById('faq-dialog-close');
+        this.shareDialog = document.getElementById('share-dialog');
+        this.shareDialogLink = document.getElementById('share-dialog-link');
+        this.shareDialogCopy = document.getElementById('share-dialog-copy');
+        this.shareDialogClose = document.getElementById('share-dialog-close');
+        this.shareDialogFeedback = document.getElementById('share-dialog-feedback');
 
         this.cellElements = [];
         this.isMouseDown = false;
@@ -47,7 +53,7 @@ export class UIManager {
         this.initActionButtons();
         this.initStationTooltip();
         this.setupEventListeners();
-        this.updateInfoIndicators();
+        this.updateCounter();
     }
 
     initStationTooltip() {
@@ -203,6 +209,21 @@ export class UIManager {
                 this.closeFaqDialog();
             });
         }
+        if (this.shareDialogClose) {
+            this.shareDialogClose.addEventListener('click', () => this.closeShareDialog());
+        }
+        if (this.shareDialogCopy) {
+            this.shareDialogCopy.addEventListener('click', () => this.copyShareLink());
+        }
+        if (this.shareDialog) {
+            this.shareDialog.addEventListener('click', (e) => {
+                if (e.target === this.shareDialog) this.closeShareDialog();
+            });
+            this.shareDialog.addEventListener('cancel', (e) => {
+                e.preventDefault();
+                this.closeShareDialog();
+            });
+        }
     }
 
     bindActionTooltip(button, text) {
@@ -240,7 +261,42 @@ export class UIManager {
     }
 
     handleSharePlan() {
-        // Share link flow will be added later.
+        this.openShareDialog();
+    }
+
+    openShareDialog() {
+        if (!this.shareDialog || !this.shareDialogLink) return;
+
+        const { grid, cols, rows } = this.gameState;
+        this.shareDialogLink.value = buildShareUrl(grid, cols, rows);
+        this.shareDialogFeedback.hidden = true;
+        this.hideTooltip();
+        this.shareDialog.showModal();
+    }
+
+    closeShareDialog() {
+        this.shareDialog?.close();
+    }
+
+    async copyShareLink() {
+        if (!this.shareDialogLink) return;
+
+        const link = this.shareDialogLink.value;
+
+        try {
+            await navigator.clipboard.writeText(link);
+        } catch {
+            this.shareDialogLink.focus();
+            this.shareDialogLink.select();
+            document.execCommand('copy');
+        }
+
+        if (this.shareDialogFeedback) {
+            this.shareDialogFeedback.hidden = false;
+            window.setTimeout(() => {
+                this.shareDialogFeedback.hidden = true;
+            }, 2000);
+        }
     }
 
     renderFaqContent() {
