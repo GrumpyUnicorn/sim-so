@@ -39,6 +39,11 @@ export const FAQ_ITEMS = [
             'Nej, inte på någon server. Allt körs lokalt i din webbläsare. Om du delar en länk med Klar & Dela! ligger din plan kodad i webbadressen — men ingen data skickas till oss eller lagras någon annanstans.'
     },
     {
+        question: 'Sätter sidan några cookies?',
+        answer:
+            'Nej. Simulatorn sätter inga cookies och har ingen spårning eller analys. Den sparar bara ditt val av kartmodell lokalt i webbläsaren (localStorage). Typsnittet laddas från Google Fonts — det är en extern tjänst som i vissa fall kan sätta egna cookies, men det kommer inte från simulatorn själv.'
+    },
+    {
         question: 'Hur fungerar Återställ?',
         answer:
             'Alla byggbara rutor återgår till ursprunglig skog och park. Boulevard, Stordammen, befintlig Sävja och andra fasta delar ligger kvar.'
