@@ -19,6 +19,16 @@ export const FAQ_ITEMS = [
             'Det syftar på Fyrspårsavtalet och det stora bostadsbyggandet som Uppsala kommun planerar i området. Indikatorn blir grön när du har minst 21 500 nya bostäder i spelområdet.'
     },
     {
+        question: 'Vad händer om Uppsalapaketet är rött?',
+        answer:
+            'Då blir det kanske ingen spårvagn till Gottsunda. (Men det beror också på hur mycket man bygger ut Gottsunda, vilket inte är med i den här simulatorn.) Fyrspåret används av alla som har nytta av bättre resor från Uppsala station, och fler bostäder kommer att byggas i kommunen.'
+    },
+    {
+        question: 'Hur stor blir Bergsbrunna station?',
+        answer:
+            '”Stationsnära bostäder” visar hur många bostäder som du planerat inom 5 minuters gångavstånd (400 m) till stationen och ger exempel på stationer med liknande antal bostäder i närområdet. Notera att Bergsbrunna bara kommer att ha bostäder på västra sidan av spåret medan många av exemplen har bostäder på båda sidor.'
+    },
+    {
         question: 'Sparas min plan eller mina uppgifter någonstans?',
         answer:
             'Nej. Simulatorn sparar ingen information alls — varken din plan, personuppgifter eller annan data. Allt körs lokalt i din webbläsare och försvinner när du laddar om sidan eller stänger fliken.'

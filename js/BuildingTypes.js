@@ -25,8 +25,8 @@ export const ZoningTypes = {
         colorClass: 'cell-smahus',
         colorHex: '#f2c94c',
         tooltip: [
-            { label: 'Typologi', text: 'Gles småhusbebyggelse' },
-            { label: 'Exempel', text: 'Bergsbrunna / Nåntuna' },
+            { label: 'Typologi', text: 'Småhusbebyggelse' },
+            { label: 'Exempel', text: 'Bergsbrunna & Nåntuna, men även klassiska svenska trädgårdsstäder som Norra Ängby.' },
             {
                 label: 'Layout & Skala',
                 text: 'Friliggande villor och egnahem på stora tomter, inbäddade i generösa privata trädgårdar (ofta 800–1200 kvm).'
