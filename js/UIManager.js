@@ -185,8 +185,8 @@ export class UIManager {
 
     initActionButtons() {
         this.bindActionTooltip(this.resetButton, ACTION_TOOLTIPS.reset);
-        this.bindActionTooltip(this.shareButton, ACTION_TOOLTIPS.share);
-        this.bindActionTooltip(this.faqButton, ACTION_TOOLTIPS.faq);
+        this.bindActionTooltip(this.shareButton, ACTION_TOOLTIPS.share, true);
+        this.bindActionTooltip(this.faqButton, ACTION_TOOLTIPS.faq, true);
 
         if (this.resetButton) {
             this.resetButton.addEventListener('click', () => this.resetGrid());
@@ -226,22 +226,48 @@ export class UIManager {
         }
     }
 
-    bindActionTooltip(button, text) {
+    bindActionTooltip(button, text, anchorToButton = false) {
         if (!button) return;
-        button.addEventListener('mouseenter', (e) => this.showActionTooltip(text, e));
-        button.addEventListener('mousemove', (e) => this.moveTooltip(e));
+        button.addEventListener('mouseenter', (e) => this.showActionTooltip(text, e, anchorToButton ? button : null));
+        button.addEventListener('mousemove', (e) => {
+            if (anchorToButton) this.positionActionTooltip(anchorToButton);
+            else this.moveTooltip(e);
+        });
         button.addEventListener('mouseleave', () => this.hideTooltip());
     }
 
-    showActionTooltip(text, e) {
+    showActionTooltip(text, e, anchorButton = null) {
         this.tooltip.replaceChildren();
         this.tooltip.className = 'cell-tooltip cell-tooltip--station';
         const label = document.createElement('span');
         label.textContent = text;
         this.tooltip.appendChild(label);
         this.tooltip.style.display = 'block';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
+        requestAnimationFrame(() => {
+            if (anchorButton) this.positionActionTooltip(anchorButton);
+            else this.moveTooltip(e);
+            this.tooltip.style.opacity = '1';
+        });
+    }
+
+    positionActionTooltip(button) {
+        const margin = 8;
+        const gap = 8;
+        const buttonRect = button.getBoundingClientRect();
+        const tipRect = this.tooltip.getBoundingClientRect();
+
+        let left = buttonRect.right - tipRect.width;
+        let top = buttonRect.top - tipRect.height - gap;
+
+        if (top < margin) {
+            top = buttonRect.bottom + gap;
+        }
+
+        left = Math.max(margin, Math.min(left, window.innerWidth - tipRect.width - margin));
+        top = Math.max(margin, Math.min(top, window.innerHeight - tipRect.height - margin));
+
+        this.tooltip.style.left = `${left}px`;
+        this.tooltip.style.top = `${top}px`;
     }
 
     resetGrid() {
