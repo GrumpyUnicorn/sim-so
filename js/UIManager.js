@@ -83,9 +83,41 @@ export class UIManager {
         });
     }
 
+    clampTooltipPosition(left, top, margin = 8) {
+        const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+        const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+        const tipRect = this.tooltip.getBoundingClientRect();
+
+        return {
+            left: Math.max(margin, Math.min(left, viewportWidth - tipRect.width - margin)),
+            top: Math.max(margin, Math.min(top, viewportHeight - tipRect.height - margin))
+        };
+    }
+
+    positionTooltipNearCursor(e, offset = 14, margin = 8) {
+        const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+        const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+        const tipRect = this.tooltip.getBoundingClientRect();
+
+        let left = e.clientX + offset;
+        let top = e.clientY + offset;
+
+        if (left + tipRect.width > viewportWidth - margin) {
+            left = e.clientX - tipRect.width - offset;
+        }
+        if (top + tipRect.height > viewportHeight - margin) {
+            top = e.clientY - tipRect.height - offset;
+        }
+
+        const clamped = this.clampTooltipPosition(left, top, margin);
+        this.tooltip.style.left = `${clamped.left}px`;
+        this.tooltip.style.top = `${clamped.top}px`;
+    }
+
     positionStationTooltip() {
         if (!this.stationBuilding) return;
 
+        const margin = 8;
         const offset = 12;
         const stationRect = this.stationBuilding.getBoundingClientRect();
         const tipRect = this.tooltip.getBoundingClientRect();
@@ -93,27 +125,46 @@ export class UIManager {
         let left = stationRect.left - tipRect.width - offset;
         let top = stationRect.top + (stationRect.height - tipRect.height) / 2;
 
-        left = Math.max(8, left);
-        top = Math.max(8, Math.min(top, window.innerHeight - tipRect.height - 8));
+        if (left < margin) {
+            left = stationRect.right + offset;
+        }
 
-        this.tooltip.style.left = `${left}px`;
-        this.tooltip.style.top = `${top}px`;
+        const clamped = this.clampTooltipPosition(left, top, margin);
+        this.tooltip.style.left = `${clamped.left}px`;
+        this.tooltip.style.top = `${clamped.top}px`;
+    }
+
+    positionTooltipNearElement(element, margin = 8, gap = 10) {
+        const rect = element.getBoundingClientRect();
+        const tipRect = this.tooltip.getBoundingClientRect();
+        const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+
+        let left = rect.right + gap;
+        let top = rect.top + (rect.height - tipRect.height) / 2;
+
+        if (left + tipRect.width > viewportWidth - margin) {
+            left = rect.left - tipRect.width - gap;
+        }
+
+        const clamped = this.clampTooltipPosition(left, top, margin);
+        this.tooltip.style.left = `${clamped.left}px`;
+        this.tooltip.style.top = `${clamped.top}px`;
     }
 
     initInfoIndicatorTooltips() {
         if (this.gronskaIndicator) {
             this.gronskaIndicator.addEventListener('mouseenter', (e) => this.showGronskaTooltip(e));
-            this.gronskaIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            this.gronskaIndicator.addEventListener('mousemove', (e) => this.positionTooltipNearCursor(e));
             this.gronskaIndicator.addEventListener('mouseleave', () => this.hideTooltip());
         }
         if (this.fyrsparsavtaletIndicator) {
             this.fyrsparsavtaletIndicator.addEventListener('mouseenter', (e) => this.showFyrsparsavtaletTooltip(e));
-            this.fyrsparsavtaletIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            this.fyrsparsavtaletIndicator.addEventListener('mousemove', (e) => this.positionTooltipNearCursor(e));
             this.fyrsparsavtaletIndicator.addEventListener('mouseleave', () => this.hideTooltip());
         }
         if (this.stationsnaraIndicator) {
             this.stationsnaraIndicator.addEventListener('mouseenter', (e) => this.showStationsnaraTooltip(e));
-            this.stationsnaraIndicator.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            this.stationsnaraIndicator.addEventListener('mousemove', (e) => this.positionTooltipNearCursor(e));
             this.stationsnaraIndicator.addEventListener('mouseleave', () => this.hideTooltip());
         }
     }
@@ -147,8 +198,10 @@ export class UIManager {
         this.tooltip.appendChild(footer);
 
         this.tooltip.style.display = 'flex';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
+        requestAnimationFrame(() => {
+            this.positionTooltipNearCursor(e);
+            this.tooltip.style.opacity = '1';
+        });
     }
 
     showFyrsparsavtaletTooltip(e) {
@@ -163,8 +216,10 @@ export class UIManager {
         });
 
         this.tooltip.style.display = 'flex';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
+        requestAnimationFrame(() => {
+            this.positionTooltipNearCursor(e);
+            this.tooltip.style.opacity = '1';
+        });
     }
 
     showStationsnaraTooltip(e) {
@@ -185,8 +240,10 @@ export class UIManager {
         this.tooltip.appendChild(mirrorNote);
 
         this.tooltip.style.display = 'flex';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
+        requestAnimationFrame(() => {
+            this.positionTooltipNearCursor(e);
+            this.tooltip.style.opacity = '1';
+        });
     }
 
     initActionButtons() {
@@ -243,7 +300,7 @@ export class UIManager {
         button.addEventListener('mouseenter', (e) => this.showActionTooltip(text, e, anchorToButton ? button : null));
         button.addEventListener('mousemove', (e) => {
             if (anchorToButton) this.positionActionTooltip(anchorToButton);
-            else this.moveTooltip(e);
+            else this.positionTooltipNearCursor(e);
         });
         button.addEventListener('mouseleave', () => this.hideTooltip());
     }
@@ -257,7 +314,7 @@ export class UIManager {
         this.tooltip.style.display = 'block';
         requestAnimationFrame(() => {
             if (anchorButton) this.positionActionTooltip(anchorButton);
-            else this.moveTooltip(e);
+            else this.positionTooltipNearCursor(e);
             this.tooltip.style.opacity = '1';
         });
     }
@@ -275,11 +332,13 @@ export class UIManager {
             top = buttonRect.bottom + gap;
         }
 
-        left = Math.max(margin, Math.min(left, window.innerWidth - tipRect.width - margin));
-        top = Math.max(margin, Math.min(top, window.innerHeight - tipRect.height - margin));
+        if (left < margin) {
+            left = buttonRect.left;
+        }
 
-        this.tooltip.style.left = `${left}px`;
-        this.tooltip.style.top = `${top}px`;
+        const clamped = this.clampTooltipPosition(left, top, margin);
+        this.tooltip.style.left = `${clamped.left}px`;
+        this.tooltip.style.top = `${clamped.top}px`;
     }
 
     resetGrid() {
@@ -412,8 +471,8 @@ export class UIManager {
             btn.appendChild(nameSpan);
             btn.appendChild(colorBox);
 
-            btn.addEventListener('mouseenter', (e) => this.showZoneTooltip(zone, e));
-            btn.addEventListener('mousemove', (e) => this.moveTooltip(e));
+            btn.addEventListener('mouseenter', (e) => this.showZoneTooltip(zone, e, btn));
+            btn.addEventListener('mousemove', () => this.positionTooltipNearElement(btn));
             btn.addEventListener('mouseleave', () => this.hideTooltip());
 
             btn.addEventListener('click', () => this.setActiveTool(zone, btn));
@@ -448,7 +507,7 @@ export class UIManager {
                 cell.dataset.y = y;
 
                 cell.addEventListener('mouseenter', (e) => this.handleCellTooltip(x, y, e));
-                cell.addEventListener('mousemove', (e) => this.moveTooltip(e));
+                cell.addEventListener('mousemove', (e) => this.positionTooltipNearCursor(e));
                 cell.addEventListener('mouseleave', () => this.hideTooltip());
 
                 // Event listeners for drawing
@@ -496,11 +555,13 @@ export class UIManager {
         label.textContent = text;
         this.tooltip.appendChild(label);
         this.tooltip.style.display = 'block';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
+        requestAnimationFrame(() => {
+            this.positionTooltipNearCursor(e);
+            this.tooltip.style.opacity = '1';
+        });
     }
 
-    showZoneTooltip(zone, e) {
+    showZoneTooltip(zone, e, anchorElement = null) {
         this.tooltip.replaceChildren();
         this.tooltip.className = 'cell-tooltip cell-tooltip--zone';
         const density = document.createElement('span');
@@ -522,14 +583,11 @@ export class UIManager {
             this.tooltip.appendChild(block);
         });
         this.tooltip.style.display = 'flex';
-        requestAnimationFrame(() => { this.tooltip.style.opacity = '1'; });
-        this.moveTooltip(e);
-    }
-
-    moveTooltip(e) {
-        const offset = 14;
-        this.tooltip.style.left = (e.clientX + offset) + 'px';
-        this.tooltip.style.top = (e.clientY + offset) + 'px';
+        requestAnimationFrame(() => {
+            if (anchorElement) this.positionTooltipNearElement(anchorElement);
+            else this.positionTooltipNearCursor(e);
+            this.tooltip.style.opacity = '1';
+        });
     }
 
     hideTooltip() {
