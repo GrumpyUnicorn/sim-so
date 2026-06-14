@@ -54,6 +54,11 @@ export const FAQ_ITEMS = [
             'Ja, SimCity är roligare. Poängen med den här sidan är bara att ge folk en chans att se vad 21 500 nya bostäder i Sydöstra Uppsala faktiskt skulle innebära.'
     },
     {
+        question: 'Borde vi inte ha vägar, skolor, osv?',
+        answer:
+            'Det är mer eller mindre inräknat i tätheterna. Det här är som sagt inte SimCity.'
+    },
+    {
         question: 'Vad gör Klar & Dela!?',
         answer:
             'Skapar en länk till din plan. En vän kan öppna länken och se exakt vad du byggt, prova egna förslag och dela en ny länk tillbaka. Du kan valfritt lägga till namn och hälsning — allt packas i den kodade länken och sparas inte på någon server.'
