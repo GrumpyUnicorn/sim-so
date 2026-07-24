@@ -214,43 +214,67 @@
 }
 
 .splash-bubbles--types {
-    gap: 1.5rem;
+    gap: 1.25rem;
     flex: 1;
     justify-content: center;
     margin-top: 0;
+    width: 100%;
 }
 
 .splash-bubble-row--types {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: stretch;
-    gap: 0.85rem 0.75rem;
+    gap: 0.65rem;
     width: 100%;
-    max-width: min(72rem, 98vw);
+    max-width: min(78rem, 98vw);
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
 }
 
 .splash-bubble--type {
-    flex: 1 1 7.5rem;
-    max-width: 9.5rem;
+    flex: 1 1 0;
+    min-width: 8.5rem;
+    max-width: 11rem;
     left: 0;
-    padding: 0.7rem 0.65rem 0.85rem;
-    font-size: 0.68rem;
+    padding: 0.65rem 0.55rem 0.8rem;
+    font-size: 0.62rem;
     line-height: 1.3;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.35rem;
     border-radius: 22px 18px 20px 24px / 18px 24px 16px 20px;
     box-shadow: 4px 4px 0 var(--border-color);
 }
 
-.splash-bubble--type p {
+.splash-bubble__type-name {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.72rem;
+    line-height: 1.25;
     min-height: 2.4em;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.splash-bubble__type-example {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.58rem;
+    letter-spacing: 0.01em;
+    color: #5a4a2a;
+}
+
+.splash-bubble__type-blurb {
+    margin: 0;
+    font-weight: 400;
+    font-size: 0.58rem;
+    line-height: 1.35;
+    color: var(--text-color);
 }
 
 .splash-bubble-row--types .splash-bubble--type:nth-child(1) { animation-delay: 1.2s; }
@@ -262,8 +286,8 @@
 .splash-bubble-row--types .splash-bubble--type:nth-child(7) { animation-delay: 2.1s; }
 
 .splash-bubble__image-slot {
-    width: 5.5rem;
-    height: 5.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
     flex-shrink: 0;
     border: 3px dashed rgba(26, 26, 26, 0.35);
     border-radius: 10px 8px 12px 9px / 8px 12px 7px 10px;
@@ -274,8 +298,8 @@
 
 .splash-bubble__image-slot img,
 .splash-bubble--type .splash-bubble__image {
-    width: 5.5rem;
-    height: 5.5rem;
+    width: 4.5rem;
+    height: 4.5rem;
     max-height: none;
     object-fit: cover;
     border-style: solid;
@@ -318,6 +342,18 @@
 .splash-bubble--type .splash-bubble__tail--right::after {
     left: auto;
     right: -10px;
+}
+
+@media (max-width: 900px) {
+    .splash-bubble-row--types {
+        flex-wrap: wrap;
+        overflow-x: visible;
+    }
+
+    .splash-bubble--type {
+        flex: 1 1 9rem;
+        max-width: 11rem;
+    }
 }
 
 .splash-bubble--first {
