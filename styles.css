@@ -1582,6 +1582,84 @@ body {
     box-shadow: 4px 4px 0 var(--border-color);
 }
 
+/* Illustrerad: hectare vignettes matching splash city-type art */
+[data-tile-theme="illustrerad"] .game-grid .grid-cell {
+    background-color: #8ab060;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: auto;
+}
+
+[data-tile-theme="illustrerad"] .toolbar .tool-color-box {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+[data-tile-theme="illustrerad"] .game-grid .cell-empty {
+    background-color: #c8d4a8;
+    background-image: none;
+}
+
+[data-tile-theme="illustrerad"] .game-grid .cell-woodland,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-0,
+[data-tile-theme="illustrerad"] .toolbar .cell-woodland,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-0 {
+    background-color: #5a9e4a;
+    background-image: url("tile-woodland.png");
+}
+
+[data-tile-theme="illustrerad"] .game-grid .cell-smahus,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-15,
+[data-tile-theme="illustrerad"] .toolbar .cell-smahus,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-15 {
+    background-color: #8fbc6e;
+    background-image: url("tile-smahus.png");
+}
+
+/* Trädgårdsstad uses cell-radhus in BuildingTypes */
+[data-tile-theme="illustrerad"] .game-grid .cell-radhus,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-30,
+[data-tile-theme="illustrerad"] .toolbar .cell-radhus,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-30 {
+    background-color: #7cb85c;
+    background-image: url("tile-klassisk.png");
+}
+
+/* Lamellhus uses cell-klassisk in BuildingTypes */
+[data-tile-theme="illustrerad"] .game-grid .cell-klassisk,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-50,
+[data-tile-theme="illustrerad"] .toolbar .cell-klassisk,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-50 {
+    background-color: #72b054;
+    background-image: url("tile-lamellhus.png");
+}
+
+[data-tile-theme="illustrerad"] .game-grid .cell-hoghus,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-100,
+[data-tile-theme="illustrerad"] .toolbar .cell-hoghus,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-100 {
+    background-color: #6aa050;
+    background-image: url("tile-hoghus.png");
+}
+
+[data-tile-theme="illustrerad"] .game-grid .cell-tata,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-150,
+[data-tile-theme="illustrerad"] .toolbar .cell-tata,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-150 {
+    background-color: #bda783;
+    background-image: url("tile-tata.png");
+}
+
+[data-tile-theme="illustrerad"] .game-grid .cell-mycket,
+[data-tile-theme="illustrerad"] .game-grid .cell-tier-250,
+[data-tile-theme="illustrerad"] .toolbar .cell-mycket,
+[data-tile-theme="illustrerad"] .toolbar .cell-tier-250 {
+    background-color: #474f78;
+    background-image: url("tile-mycket.png");
+}
+
 @media (max-width: 900px) {
     .splash-bubble--first,
     .splash-bubble--second,

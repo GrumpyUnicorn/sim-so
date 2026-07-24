@@ -11,7 +11,7 @@ export const FAQ_ITEMS = [
     {
         question: 'Vad är kartmodell?',
         answer:
-            'Kartmodell är menyn uppe till höger där du väljer hur rutnätet ritas. ”Platta färger” visar enkla, rena färgrutor. ”Top down” är standardläget med en mer kartliknande vy. ”Tecknat” ger en illustrerad, serietidningsinspirerad stil som matchar introduktionen.'
+            'Kartmodell är menyn uppe till höger där du väljer hur rutnätet ritas. ”Platta färger” visar enkla, rena färgrutor. ”Top down” är standardläget med en mer kartliknande vy. ”Tecknat” ger en illustrerad, serietidningsinspirerad stil som matchar introduktionen. ”Illustrerad” använder akvarellbilder av varje stadstyp sedda snett uppifrån.'
     },
     {
         question: 'Vad betyder Grönska (3-30-300)?',
