@@ -26,9 +26,12 @@ function initSharedSplashContent() {
     const { name, message } = getSharedGreetingFromUrl();
     if (!name && !message) return false;
 
-    const thirdBubble = document.querySelector('.splash-bubble--third p');
-    const fourthBubble = document.querySelector('.splash-bubble--fourth p');
-    const fifthBubble = document.querySelector('.splash-bubble--fifth');
+    const splash = document.getElementById('splash-screen');
+    if (!splash) return false;
+
+    const thirdBubble = splash.querySelector('.splash-bubble--third p');
+    const fourthBubble = splash.querySelector('.splash-bubble--fourth p');
+    const fifthBubble = splash.querySelector('.splash-bubble--fifth');
 
     if (!thirdBubble || !fourthBubble || !fifthBubble) return false;
 
@@ -51,20 +54,9 @@ function initSharedSplashContent() {
     return true;
 }
 
-function initSplashScreen() {
-    const splash = document.getElementById('splash-screen');
-    if (!splash) return;
-
-    splash.addEventListener('click', () => {
-        splash.classList.add('hidden');
-        setTimeout(() => { splash.style.display = 'none'; }, 400);
-    });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
     const isMobileReadOnly = initMobileView();
     const hasSharedGreeting = initSharedSplashContent();
-    initSplashScreen();
     initTileThemeSelector();
 
     const gameState = new GameState(26, 11);

@@ -10,8 +10,9 @@ export function initMobileView(documentRoot = document.documentElement) {
 
     documentRoot.dataset.mobileReadonly = 'true';
 
-    const hint = document.querySelector('.splash-hint');
-    if (hint) hint.textContent = 'Tryck för att fortsätta';
+    const hints = document.querySelectorAll('.splash-hint');
+    if (hints[0]) hints[0].textContent = 'Tryck för att fortsätta';
+    if (hints[1]) hints[1].textContent = 'Tryck för att starta';
 
     return true;
 }
