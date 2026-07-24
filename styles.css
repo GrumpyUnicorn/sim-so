@@ -295,6 +295,12 @@
     background:
         linear-gradient(135deg, rgba(26, 26, 26, 0.04) 25%, transparent 25%) -6px 0 / 12px 12px,
         #f3f0e4;
+    overflow: hidden;
+}
+
+.splash-bubble__image-slot:has(img) {
+    border: none;
+    background: transparent;
 }
 
 .splash-bubble__image-slot img,
@@ -303,7 +309,8 @@
     height: 9rem;
     max-height: none;
     object-fit: cover;
-    border-style: solid;
+    border: 3px solid var(--border-color);
+    border-radius: 10px 8px 12px 9px / 8px 12px 7px 10px;
 }
 
 .splash-bubble--type .splash-bubble__tail {
