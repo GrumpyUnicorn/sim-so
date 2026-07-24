@@ -186,6 +186,34 @@
     gap: 0.85rem;
 }
 
+.splash-bubbles--compare {
+    gap: 2rem;
+}
+
+.splash-bubble-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.5rem 2rem;
+    width: 100%;
+    max-width: min(72rem, 96vw);
+}
+
+.splash-bubble-row .splash-bubble--with-image {
+    flex: 1 1 18rem;
+    max-width: min(34rem, 100%);
+    left: 0;
+}
+
+.splash-bubble-row .splash-bubble--second {
+    left: 0;
+}
+
+.splash-bubble-row .splash-bubble--third {
+    left: 0;
+}
+
 .splash-bubble__image {
     display: block;
     width: 100%;
