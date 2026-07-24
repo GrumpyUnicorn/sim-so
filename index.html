@@ -61,17 +61,15 @@
                 <p>För att undersöka olika alternativ för skogen norr om Lunsen så måste vi förenkla lite.</p>
                 <span class="splash-bubble__tail" aria-hidden="true"></span>
             </div>
-            <div class="splash-bubble-row">
-                <div class="splash-bubble splash-bubble--second splash-bubble--with-image" role="note">
-                    <p>I på kommunens bilder ser området som man vill bebygga ut ungefär så här:</p>
-                    <img src="skissad-so.png" alt="Skiss av området som kommunen vill bebygga" class="splash-bubble__image">
-                    <span class="splash-bubble__tail splash-bubble__tail--right" aria-hidden="true"></span>
-                </div>
-                <div class="splash-bubble splash-bubble--third splash-bubble--with-image" role="note">
-                    <p>Men vi har gjort om den till en fyrkant som ser ut så här</p>
-                    <img src="spel-so.png" alt="Förenklad fyrkantig spelplan över området" class="splash-bubble__image">
-                    <span class="splash-bubble__tail" aria-hidden="true"></span>
-                </div>
+            <div class="splash-bubble splash-bubble--second splash-bubble--with-image" role="note">
+                <p>I på kommunens bilder ser området som man vill bebygga ut ungefär så här:</p>
+                <img src="skissad-so.png" alt="Skiss av området som kommunen vill bebygga" class="splash-bubble__image">
+                <span class="splash-bubble__tail splash-bubble__tail--right" aria-hidden="true"></span>
+            </div>
+            <div class="splash-bubble splash-bubble--third splash-bubble--with-image" role="note">
+                <p>Men vi har gjort om den till en fyrkant som ser ut så här:</p>
+                <img src="spel-so.png" alt="Förenklad fyrkantig spelplan över området" class="splash-bubble__image">
+                <span class="splash-bubble__tail" aria-hidden="true"></span>
             </div>
         </div>
         <p class="splash-hint">Klicka för att starta</p>
@@ -216,6 +214,7 @@
                     setTimeout(function () {
                         splash.classList.add('is-closed');
                         splash.style.display = 'none';
+                        splash.style.zIndex = '';
                         splash.setAttribute('aria-hidden', 'true');
                         resolve();
                     }, 400);
@@ -240,18 +239,29 @@
                 if (!splash) return;
 
                 var advancing = false;
+                var splash2Ready = false;
 
                 splash.addEventListener('click', function () {
                     if (advancing) return;
                     advancing = true;
+
+                    // Keep the backdrop continuous: reveal splash 2 under splash 1, then fade splash 1 away.
+                    if (splash2) {
+                        splash.style.zIndex = '10001';
+                        splash2.style.pointerEvents = 'none';
+                        showSplash(splash2);
+                    }
                     dismissSplash(splash).then(function () {
-                        if (splash2) showSplash(splash2);
+                        if (!splash2) return;
+                        splash2.style.pointerEvents = '';
+                        splash2Ready = true;
                     });
                 });
 
                 if (!splash2) return;
 
                 splash2.addEventListener('click', function () {
+                    if (!splash2Ready) return;
                     if (splash2.classList.contains('is-closed') || splash2.classList.contains('hidden')) return;
                     dismissSplash(splash2);
                 });
