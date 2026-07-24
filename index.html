@@ -72,6 +72,53 @@
                 <span class="splash-bubble__tail" aria-hidden="true"></span>
             </div>
         </div>
+        <p class="splash-hint">Klicka för att fortsätta</p>
+    </div>
+
+    <div id="splash-screen-3" class="splash-screen splash-screen--followup is-closed" aria-hidden="true">
+        <div class="splash-bubbles splash-bubbles--types">
+            <div class="splash-bubble splash-bubble--first" role="note">
+                <p>Varje ruta på spelplanen är 100 &times; 100 meter &mdash; ett hektar. Din uppgift är att välja stadstyp för rutorna.</p>
+                <span class="splash-bubble__tail" aria-hidden="true"></span>
+            </div>
+            <div class="splash-bubble-row splash-bubble-row--types">
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Natur &amp; Park</p>
+                    <div class="splash-bubble__image-slot" data-type="woodland" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail" aria-hidden="true"></span>
+                </div>
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Småhus &amp; Egnahem</p>
+                    <div class="splash-bubble__image-slot" data-type="smahus" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail splash-bubble__tail--right" aria-hidden="true"></span>
+                </div>
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Trädgårdsstad</p>
+                    <div class="splash-bubble__image-slot" data-type="klassisk" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail" aria-hidden="true"></span>
+                </div>
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Lamellhus i park</p>
+                    <div class="splash-bubble__image-slot" data-type="lamellhus" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail splash-bubble__tail--right" aria-hidden="true"></span>
+                </div>
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Skivhus i park</p>
+                    <div class="splash-bubble__image-slot" data-type="hoghus" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail" aria-hidden="true"></span>
+                </div>
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Sluten kvartersstad</p>
+                    <div class="splash-bubble__image-slot" data-type="tata" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail splash-bubble__tail--right" aria-hidden="true"></span>
+                </div>
+                <div class="splash-bubble splash-bubble--type" role="note">
+                    <p>Hypertät urbanism</p>
+                    <div class="splash-bubble__image-slot" data-type="mycket" aria-hidden="true"></div>
+                    <span class="splash-bubble__tail" aria-hidden="true"></span>
+                </div>
+            </div>
+        </div>
         <p class="splash-hint">Klicka för att starta</p>
     </div>
 
@@ -234,36 +281,35 @@
             }
 
             function initSplashScreen() {
-                var splash = document.getElementById('splash-screen');
-                var splash2 = document.getElementById('splash-screen-2');
-                if (!splash) return;
+                var screens = [
+                    document.getElementById('splash-screen'),
+                    document.getElementById('splash-screen-2'),
+                    document.getElementById('splash-screen-3')
+                ].filter(Boolean);
+                if (!screens.length) return;
 
+                var current = 0;
                 var advancing = false;
-                var splash2Ready = false;
 
-                splash.addEventListener('click', function () {
-                    if (advancing) return;
-                    advancing = true;
+                screens.forEach(function (screen, index) {
+                    screen.addEventListener('click', function () {
+                        if (advancing || index !== current) return;
+                        advancing = true;
 
-                    // Keep the backdrop continuous: reveal splash 2 under splash 1, then fade splash 1 away.
-                    if (splash2) {
-                        splash.style.zIndex = '10001';
-                        splash2.style.pointerEvents = 'none';
-                        showSplash(splash2);
-                    }
-                    dismissSplash(splash).then(function () {
-                        if (!splash2) return;
-                        splash2.style.pointerEvents = '';
-                        splash2Ready = true;
+                        var next = screens[index + 1];
+                        // Keep the backdrop continuous: reveal the next splash underneath, then fade this one away.
+                        if (next) {
+                            screen.style.zIndex = '10001';
+                            next.style.pointerEvents = 'none';
+                            showSplash(next);
+                        }
+
+                        dismissSplash(screen).then(function () {
+                            current = index + 1;
+                            advancing = false;
+                            if (next) next.style.pointerEvents = '';
+                        });
                     });
-                });
-
-                if (!splash2) return;
-
-                splash2.addEventListener('click', function () {
-                    if (!splash2Ready) return;
-                    if (splash2.classList.contains('is-closed') || splash2.classList.contains('hidden')) return;
-                    dismissSplash(splash2);
                 });
             }
 

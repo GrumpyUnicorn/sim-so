@@ -11,8 +11,11 @@ export function initMobileView(documentRoot = document.documentElement) {
     documentRoot.dataset.mobileReadonly = 'true';
 
     const hints = document.querySelectorAll('.splash-hint');
-    if (hints[0]) hints[0].textContent = 'Tryck för att fortsätta';
-    if (hints[1]) hints[1].textContent = 'Tryck för att starta';
+    hints.forEach((hint, index) => {
+        hint.textContent = index === hints.length - 1
+            ? 'Tryck för att starta'
+            : 'Tryck för att fortsätta';
+    });
 
     return true;
 }
