@@ -235,8 +235,8 @@
 
 .splash-bubble--type {
     flex: 1 1 0;
-    min-width: 8.5rem;
-    max-width: 11rem;
+    min-width: 9rem;
+    max-width: 11.5rem;
     left: 0;
     padding: 0.65rem 0.55rem 0.8rem;
     font-size: 0.62rem;
@@ -286,8 +286,9 @@
 .splash-bubble-row--types .splash-bubble--type:nth-child(7) { animation-delay: 2.1s; }
 
 .splash-bubble__image-slot {
-    width: 4.5rem;
-    height: 4.5rem;
+    /* Portrait slot: slightly wider than the old square, twice as tall (~5.25 × 9 rem) */
+    width: 5.25rem;
+    height: 9rem;
     flex-shrink: 0;
     border: 3px dashed rgba(26, 26, 26, 0.35);
     border-radius: 10px 8px 12px 9px / 8px 12px 7px 10px;
@@ -298,8 +299,8 @@
 
 .splash-bubble__image-slot img,
 .splash-bubble--type .splash-bubble__image {
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 5.25rem;
+    height: 9rem;
     max-height: none;
     object-fit: cover;
     border-style: solid;
@@ -351,8 +352,8 @@
     }
 
     .splash-bubble--type {
-        flex: 1 1 9rem;
-        max-width: 11rem;
+        flex: 1 1 9.5rem;
+        max-width: 12rem;
     }
 }
 
